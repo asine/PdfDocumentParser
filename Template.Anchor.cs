@@ -21,7 +21,7 @@ namespace Cliver.PdfDocumentParser
         public abstract class Anchor
         {
             public int Id;
-            public PointF Position;
+            public PointF Position ;
             public int SearchRectangleMargin = -1;//px
             public float PositionDeviation = 1f;
             public bool PositionDeviationIsAbsolute = false;
@@ -99,6 +99,13 @@ namespace Cliver.PdfDocumentParser
 
             public class ImageData : Anchor
             {
+                public List<ImageBox> ImageBoxs;//to be deleted: conversion
+                public class ImageBox//to be deleted: conversion
+                {
+                    public PdfDocumentParser.ImageData ImageData;
+                    public RectangleF Rectangle;
+                }
+
                 public PdfDocumentParser.ImageData Image;
 
                 public float BrightnessTolerance = 0.20f;
