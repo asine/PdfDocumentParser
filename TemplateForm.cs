@@ -113,24 +113,6 @@ namespace Cliver.PdfDocumentParser
                         else
                             selectionBoxPoint1.Y = p.Y;
                         break;
-                        //case DrawingModes.resizingSelectionBoxR:
-                        //    if (selectionBoxPoint1.X < p.X)
-                        //        selectionBoxPoint2.X = p.X;
-                        //    else
-                        //    {
-                        //        selectionBoxPoint2.X = selectionBoxPoint1.X;
-                        //        selectionBoxPoint1.X = p.X;
-                        //    }
-                        //    break;
-                        //case DrawingModes.resizingSelectionBoxB:
-                        //    if (selectionBoxPoint1.Y < p.Y)
-                        //        selectionBoxPoint2.Y = p.Y;
-                        //    else
-                        //    {
-                        //        selectionBoxPoint2.Y = selectionBoxPoint1.Y;
-                        //        selectionBoxPoint1.Y = p.Y;
-                        //    }
-                        //    break;
                 }
                 selectionCoordinates.Text = selectionBoxPoint1.ToString() + ":" + selectionBoxPoint2.ToString();
                 RectangleF r = new RectangleF(selectionBoxPoint1.X, selectionBoxPoint1.Y, selectionBoxPoint2.X - selectionBoxPoint1.X, selectionBoxPoint2.Y - selectionBoxPoint1.Y);
@@ -173,7 +155,10 @@ namespace Cliver.PdfDocumentParser
                                                 pt.CharBoxs = new List<Template.Anchor.PdfText.CharBox>();
                                                 List<Pdf.Line> lines = Pdf.RemoveDuplicatesAndGetLines(Pdf.GetCharBoxsSurroundedByRectangle(pages[currentPageI].PdfCharBoxs, r.GetSystemRectangleF(), true), -1, null);
                                                 if (lines.Count < 1)
+                                                {
+                                                    pt.Size = null;
                                                     break;
+                                                }
                                                 foreach (Pdf.Line l in lines)
                                                     foreach (Pdf.CharBox cb in l.CharBoxs)
                                                         pt.CharBoxs.Add(new Template.Anchor.PdfText.CharBox
@@ -181,6 +166,7 @@ namespace Cliver.PdfDocumentParser
                                                             Char = cb.Char,
                                                             Rectangle = new Template.RectangleF(cb.R.X, cb.R.Y, cb.R.Width, cb.R.Height),
                                                         });
+                                                pt.Size = new Template.SizeF { Width = r.Width, Height = r.Height };
                                             }
                                             break;
                                         case Template.Anchor.Types.OcrText:
@@ -206,6 +192,7 @@ namespace Cliver.PdfDocumentParser
                                                             Char = cb.Char,
                                                             Rectangle = new Template.RectangleF(cb.R.X, cb.R.Y, cb.R.Width, cb.R.Height),
                                                         });
+                                                ot.Size = new Template.SizeF { Width = r.Width, Height = r.Height };
                                             }
                                             break;
                                         case Template.Anchor.Types.ImageData:
@@ -261,7 +248,8 @@ namespace Cliver.PdfDocumentParser
                                 }
 
                                 setFieldRow(row, f);
-                                owners2resizebleBox[f] = new ResizebleBox(f, f.Rectangle.GetSystemRectangleF(), Settings.Appearance.SelectionBoxBorderWidth);
+                                extractFieldAndDrawSelectionBox(f);
+                                //owners2resizebleBox[f] = new ResizebleBox(f, f.Rectangle.GetSystemRectangleF(), Settings.Appearance.SelectionBoxBorderWidth);
                             }
                             break;
                         case SettingModes.NULL:

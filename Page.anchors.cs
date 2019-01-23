@@ -16,9 +16,9 @@ namespace Cliver.PdfDocumentParser
     /// <summary>
     /// pdf page parsing API
     /// </summary>
-    public partial class Page 
+    public partial class Page
     {
-        internal  AnchorActualInfo GetAnchorActualInfo(int anchorId)
+        internal AnchorActualInfo GetAnchorActualInfo(int anchorId)
         {
             Template.Anchor a = pageCollection.ActiveTemplate.Anchors.Find(x => x.Id == anchorId);
             if (a == null)
@@ -114,14 +114,16 @@ namespace Cliver.PdfDocumentParser
 
         bool _findAnchor(Template.Anchor a, PointF parentAnchorPoint0, Func<PointF, bool> proceedOnFound)
         {
+            if (!a.IsSet())
+                return false;
             RectangleF rectangle = a.Rectangle();
             RectangleF searchRectangle;
             {
                 if (a.ParentAnchorId != null)
                 {
                     RectangleF pameir = pageCollection.ActiveTemplate.Anchors.Find(x => x.Id == a.ParentAnchorId).Rectangle();
-                        rectangle.X += parentAnchorPoint0.X - pameir.X;
-                        rectangle.Y += parentAnchorPoint0.Y - pameir.Y;
+                    rectangle.X += parentAnchorPoint0.X - pameir.X;
+                    rectangle.Y += parentAnchorPoint0.Y - pameir.Y;
                 }
                 if (a.SearchRectangleMargin >= 0)
                     searchRectangle = getSearchRectangle(rectangle, a.SearchRectangleMargin);
@@ -178,7 +180,8 @@ namespace Cliver.PdfDocumentParser
                             }
                             if (tcbs.Count == cbs.Count)
                             {
-                                RectangleF actualR = new RectangleF(tcbs[0].R.X, tcbs[0].R.Y, rectangle.Width, rectangle.Height);
+                                SizeF shift = new SizeF(tcbs[0].R.X - cbs[0].Rectangle.X, tcbs[0].R.Y - cbs[0].Rectangle.Y);
+                                RectangleF actualR = new RectangleF(rectangle.X + shift.Width, rectangle.Y + shift.Height, rectangle.Width, rectangle.Height);
                                 if (PdfCharBoxs.FirstOrDefault(x => actualR.Contains(x.R) && !tcbs.Contains(x) && (!pt.IgnoreInvisibleChars || !Pdf.InvisibleCharacters.Contains(x.Char))) == null
                                 && !proceedOnFound(actualR.Location)
                                 )
@@ -253,7 +256,8 @@ namespace Cliver.PdfDocumentParser
                             }
                             if (tcbs.Count == cbs.Count)
                             {
-                                RectangleF actualR = new RectangleF(tcbs[0].R.X, tcbs[0].R.Y, rectangle.Width, rectangle.Height);
+                                SizeF shift = new SizeF(tcbs[0].R.X - cbs[0].Rectangle.X, tcbs[0].R.Y - cbs[0].Rectangle.Y);
+                                RectangleF actualR = new RectangleF(rectangle.X + shift.Width, rectangle.Y + shift.Height, rectangle.Width, rectangle.Height);
                                 if (contaningOcrCharBoxs.FirstOrDefault(x => actualR.Contains(x.R)) == null
                                 && !proceedOnFound(actualR.Location)
                                 )

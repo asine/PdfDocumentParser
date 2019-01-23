@@ -66,7 +66,7 @@ namespace Cliver.PdfDocumentParser
 
                 override public bool IsSet()
                 {
-                    return CharBoxs.Count > 0;
+                    return CharBoxs.Count > 0 && Size!=null;
                 }
 
                 override public System.Drawing.RectangleF Rectangle()
@@ -88,7 +88,7 @@ namespace Cliver.PdfDocumentParser
 
                 override public bool IsSet()
                 {
-                    return CharBoxs.Count > 0;
+                    return CharBoxs.Count > 0 && Size != null;
                 }
 
                 override public System.Drawing.RectangleF Rectangle()

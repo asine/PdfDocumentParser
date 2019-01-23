@@ -87,7 +87,16 @@ namespace Cliver.PdfDocumentParser
                 RectangleF r_ = a_.Rectangle();
                 r_.X += shift.Width;
                 r_.Y += shift.Height;
-                drawBoxes(Settings.Appearance.AnchorMasterBoxColor, Settings.Appearance.AnchorMasterBoxBorderWidth, new List<System.Drawing.RectangleF> { r_ });
+                if (a_ == a)
+                    if (currentAnchorControl != null)
+                    {
+                        drawBoxes(Settings.Appearance.SelectionBoxColor, Settings.Appearance.SelectionBoxBorderWidth, new List<RectangleF> { r_ });
+                        owners2resizebleBox[a_] = new ResizebleBox(a_, r_, Settings.Appearance.SelectionBoxBorderWidth);
+                    }
+                    else
+                        drawBoxes(Settings.Appearance.AnchorBoxColor, Settings.Appearance.AnchorBoxBorderWidth, new List<RectangleF> { r_ });
+                else
+                    drawBoxes(Settings.Appearance.AscendantAnchorBoxColor, Settings.Appearance.AscendantAnchorBoxBorderWidth, new List<RectangleF> { r_ });
 
                 List<RectangleF> bs = null;
                 switch (a_.Type)
@@ -111,7 +120,10 @@ namespace Cliver.PdfDocumentParser
                         throw new Exception("Unknown option: " + a_.Type);
                 }
                 if (bs != null)
-                    drawBoxes(Settings.Appearance.AnchorMasterBoxColor, Settings.Appearance.AnchorMasterBoxBorderWidth, bs);
+                    if (a_ == a)
+                        drawBoxes(Settings.Appearance.AnchorBoxColor, Settings.Appearance.AnchorBoxBorderWidth, bs);
+                    else
+                        drawBoxes(Settings.Appearance.AscendantAnchorBoxColor, Settings.Appearance.AscendantAnchorBoxBorderWidth, bs);
             }
             return true;
         }
@@ -134,8 +146,6 @@ namespace Cliver.PdfDocumentParser
                     if (!findAndDrawAnchor(field.LeftAnchor.Id))
                         return null;
                     Page.AnchorActualInfo aai = pages[currentPageI].GetAnchorActualInfo(field.LeftAnchor.Id);
-                    if (!aai.Found)
-                        return null;
                     float right = r.Right;
                     r.X += aai.Shift.Width - field.LeftAnchor.Shift;
                     r.Width = right - r.X;
@@ -145,8 +155,6 @@ namespace Cliver.PdfDocumentParser
                     if (!findAndDrawAnchor(field.TopAnchor.Id))
                         return null;
                     Page.AnchorActualInfo aai = pages[currentPageI].GetAnchorActualInfo(field.TopAnchor.Id);
-                    if (!aai.Found)
-                        return null;
                     float bottom = r.Bottom;
                     r.Y += aai.Shift.Height - field.TopAnchor.Shift;
                     r.Height = bottom - r.Y;
@@ -156,8 +164,6 @@ namespace Cliver.PdfDocumentParser
                     if (!findAndDrawAnchor(field.RightAnchor.Id))
                         return null;
                     Page.AnchorActualInfo aai = pages[currentPageI].GetAnchorActualInfo(field.RightAnchor.Id);
-                    if (!aai.Found)
-                        return null;
                     r.Width += aai.Shift.Width - field.RightAnchor.Shift;
                 }
                 if (field.BottomAnchor != null)
@@ -165,8 +171,6 @@ namespace Cliver.PdfDocumentParser
                     if (!findAndDrawAnchor(field.BottomAnchor.Id))
                         return null;
                     Page.AnchorActualInfo aai = pages[currentPageI].GetAnchorActualInfo(field.BottomAnchor.Id);
-                    if (!aai.Found)
-                        return null;
                     r.Height += aai.Shift.Height - field.BottomAnchor.Shift;
                 }
                 if (r.Width <= 0 || r.Height <= 0)
