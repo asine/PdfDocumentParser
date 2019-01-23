@@ -73,27 +73,20 @@ namespace Cliver.PdfDocumentParser
             }
             if (!set)
                 return null;
-            List<List<RectangleF>> rss = pages[currentPageI].GetAnchorRectangless(a.Id);
+            List<RectangleF> rs = pages[currentPageI].GetAnchorRectangles(a.Id);
             getAnchor(a.Id, out DataGridViewRow r);
-            if (rss == null || rss.Count < 1)
+            if (rs == null || rs.Count < 1)
             {
                 setRowStatus(statuses.ERROR, r, "Not found");
                 return null;
             }
             setRowStatus(statuses.SUCCESS, r, "Found");
 
-            PointF? p0 = null;
-            for (int i = rss.Count - 1; i >= 0; i--)
-            {
-                List<RectangleF> rs = rss[i];
-                drawBoxes(Settings.Appearance.AnchorMasterBoxColor, Settings.Appearance.AnchorMasterBoxBorderWidth, new List<System.Drawing.RectangleF> { rs[0] });
-                if (rs.Count > 1)
-                    drawBoxes(Settings.Appearance.AnchorSecondaryBoxColor, Settings.Appearance.AnchorSecondaryBoxBorderWidth, rs.GetRange(1, rs.Count - 1));
+            drawBoxes(Settings.Appearance.AnchorMasterBoxColor, Settings.Appearance.AnchorMasterBoxBorderWidth, new List<System.Drawing.RectangleF> { rs[0] });
+            for (int i = 1; i < rs.Count; i++)
+                drawBoxes(Settings.Appearance.AnchorSecondaryBoxColor, Settings.Appearance.AnchorSecondaryBoxBorderWidth, rs.GetRange(1, rs.Count - 1));
 
-                if (i == rss.Count - 1)
-                    p0 = new PointF(rs[0].X, rs[0].Y);
-            }
-            return p0;
+            return new PointF(rs[0].X, rs[0].Y);
         }
 
         object extractFieldAndDrawSelectionBox(Template.Field field)

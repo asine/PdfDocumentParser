@@ -222,9 +222,11 @@ namespace Cliver.PdfDocumentParser
         {
             cbs = removeDuplicates(cbs.Where(a => (r.Contains(a.R) /*|| d.IntersectsWith(a.R)*/)));
             if (excludeInvisibleCharacters)
-                cbs = cbs.Where(a => !" \t".Contains(a.Char)).ToList();
+                cbs = cbs.Where(a => !InvisibleCharacters.Contains(a.Char)).ToList();
             return cbs;
         }
+
+        public static readonly string InvisibleCharacters = " \t";
 
         public static List<Line> RemoveDuplicatesAndGetLines(IEnumerable<CharBox> cbs, float textAutoInsertSpaceThreshold, string textAutoInsertSpaceSubstitute)
         {
@@ -318,7 +320,7 @@ namespace Cliver.PdfDocumentParser
             return bts.ToList();
         }
 
-        public struct CharBox
+        public class CharBox
         {
             public System.Drawing.RectangleF R;
             public string Char;

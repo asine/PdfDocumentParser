@@ -206,9 +206,9 @@ namespace Cliver.PdfDocumentParser
                 }
             if (!set)
                 return;
-            List<List<RectangleF>> rss = pages[currentPageI].GetAnchorRectangless(a.Id);
+            List<RectangleF> rs = pages[currentPageI].GetAnchorRectangles(a.Id);
             getAnchor(a.Id, out DataGridViewRow r);
-            if (rss == null || rss.Count < 1)
+            if (rs == null || rs.Count < 1)
                 setRowStatus(statuses.ERROR, r, "Not found");
             else
                 setRowStatus(statuses.SUCCESS, r, "Found");

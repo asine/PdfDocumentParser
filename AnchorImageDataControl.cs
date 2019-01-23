@@ -54,16 +54,15 @@ namespace Cliver.PdfDocumentParser
             BrightnessTolerance.Value = (decimal)_object.BrightnessTolerance;
             DifferentPixelNumberTolerance.Value = (decimal)_object.DifferentPixelNumberTolerance;
             pictures.Controls.Clear();
-            if (_object.ImageBoxs != null)
-                foreach (Template.Anchor.ImageData.ImageBox id in _object.ImageBoxs)
+            if (_object.Image != null)
+            {
+                PictureBox p = new PictureBox
                 {
-                    PictureBox p = new PictureBox
-                    {
-                        SizeMode = PictureBoxSizeMode.AutoSize,
-                        Image = id.ImageData.GetImage()
-                    };
-                    pictures.Controls.Add(p);
-                }
+                    SizeMode = PictureBoxSizeMode.AutoSize,
+                    Image = _object.Image.GetImage()
+                };
+                pictures.Controls.Add(p);
+            }
             PositionDeviationIsAbsolute.Checked = _object.PositionDeviationIsAbsolute;
             try
             {
