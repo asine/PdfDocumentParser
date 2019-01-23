@@ -11,7 +11,8 @@ using System.Windows.Forms;
 
 /*
 TBD: 
-- change how char anchors work: allow char anchors to support empty space around selection rectangle;
+- !!!OCRTEXT anchor needs test and fix!!!;
+- !!!all the templates must be tested and fixed after changing anchor functioning!!!
 - check if tesseract's DetectBestOrientation can perform deskew;
 - MainForm and TemplateForm to WPF;
 - ? !!!in page.cs::_findAnchor() in case Template.Types.ImageData: images are not searched recursively (if a secondary image search failed then search stops). It should be done like it is done for linked anchors;
@@ -29,6 +30,7 @@ TBD:
  - options added to page::GetValue();
      - fields can be marked as columns of a table;
      - space substitution;
+     - !!!anhcor functioning changed!!!
 
     manual: tables can be processed the following ways:
     - get char boxes and do anything;
