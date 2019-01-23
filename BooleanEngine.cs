@@ -56,7 +56,8 @@ namespace Cliver.PdfDocumentParser
         {
             expression = Regex.Replace(expression, @"\d+", (Match m) =>
             {
-                return p.GetAnchorPoint0(int.Parse(m.Value)) != null ? "T" : "F";
+                Page.AnchorActualInfo aai = p.GetAnchorActualInfo(int.Parse(m.Value));
+                return aai.Found ? "T" : "F";
             });
             return parseWithSubstitutedAnchorIds(expression);
         }

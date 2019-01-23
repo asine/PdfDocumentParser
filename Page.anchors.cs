@@ -18,20 +18,6 @@ namespace Cliver.PdfDocumentParser
     /// </summary>
     public partial class Page 
     {
-        internal PointF? GetAnchorPoint0(int anchorId)
-        {
-            List<RectangleF> rs = GetAnchorActualInfo(anchorId).Rectangles;
-            if (rs == null || rs.Count < 1)
-                return null;
-            RectangleF r = rs[rs.Count - 1];
-            return new PointF(r.X, r.Y);
-        }
-
-        internal List<RectangleF> GetAnchorRectangles(int anchorId)
-        {
-            return GetAnchorActualInfo(anchorId).Rectangles;
-        }
-
         internal  AnchorActualInfo GetAnchorActualInfo(int anchorId)
         {
             Template.Anchor a = pageCollection.ActiveTemplate.Anchors.Find(x => x.Id == anchorId);
@@ -60,8 +46,8 @@ namespace Cliver.PdfDocumentParser
         internal class AnchorActualInfo
         {
             readonly public Template.Anchor Anchor;
-            readonly public List<RectangleF> Rectangles = new List<RectangleF>();
-            public bool Found { get { return Rectangles.Count > 0; } }
+            public PointF Position { get; private set; } = new PointF(-1, -1);
+            public bool Found { get { return Position.X >= 0; } }
             readonly public SizeF Shift;
 
             internal AnchorActualInfo(Template.Anchor anchor, Page page)
@@ -101,40 +87,32 @@ namespace Cliver.PdfDocumentParser
                     id = pa.ParentAnchorId;
                 }
 
-                page.findAnchor(Anchor, (RectangleF r) =>
+                page.findAnchor(Anchor, (PointF p) =>
                 {
-                    Rectangles.Add(r);
+                    Position = p;
                     return false;
-                }, Rectangles);
+                });
 
                 if (Found)
-                {
-                    RectangleF r = Rectangles[Rectangles.Count - 1];
-                    Shift = new SizeF(r.X - Anchor.Position.X, r.Y - Anchor.Position.Y);
-                }
+                    Shift = new SizeF(Position.X - Anchor.Position.X, Position.Y - Anchor.Position.Y);
             }
         }
 
-        void findAnchor(Template.Anchor a, Func<RectangleF, bool> proceedOnFound, List<RectangleF> anchorRectangles)
+        void findAnchor(Template.Anchor a, Func<PointF, bool> proceedOnFound)
         {
             if (a.ParentAnchorId != null)
             {
                 Template.Anchor pa = pageCollection.ActiveTemplate.Anchors.Find(x => x.Id == a.ParentAnchorId);
-                findAnchor(pa, (RectangleF r) =>
+                findAnchor(pa, (PointF p) =>
                  {
-                     if (_findAnchor(a, r.Location, proceedOnFound))
-                     {
-                         anchorRectangles.Insert(0, r);
-                         return false;
-                     }
-                     return true;
-                 }, anchorRectangles);
-                return;
+                     return !_findAnchor(a, p, proceedOnFound);
+                 });
             }
-            _findAnchor(a, new PointF(), proceedOnFound);
+            else
+                _findAnchor(a, new PointF(), proceedOnFound);
         }
 
-        bool _findAnchor(Template.Anchor a, PointF parentAnchorPoint0, Func<RectangleF, bool> proceedOnFound)
+        bool _findAnchor(Template.Anchor a, PointF parentAnchorPoint0, Func<PointF, bool> proceedOnFound)
         {
             RectangleF rectangle = a.Rectangle();
             RectangleF searchRectangle;
@@ -166,7 +144,7 @@ namespace Cliver.PdfDocumentParser
                                 {
                                     RectangleF actualR = new RectangleF(i, j, rectangle.Width, rectangle.Height);
                                     if (PdfCharBoxs.FirstOrDefault(x => actualR.Contains(x.R) && (!pt.IgnoreInvisibleChars || !Pdf.InvisibleCharacters.Contains(x.Char))) == null
-                                        && !proceedOnFound(actualR)
+                                        && !proceedOnFound(actualR.Location)
                                         )
                                         return true;
                                 }
@@ -202,7 +180,7 @@ namespace Cliver.PdfDocumentParser
                             {
                                 RectangleF actualR = new RectangleF(tcbs[0].R.X, tcbs[0].R.Y, rectangle.Width, rectangle.Height);
                                 if (PdfCharBoxs.FirstOrDefault(x => actualR.Contains(x.R) && !tcbs.Contains(x) && (!pt.IgnoreInvisibleChars || !Pdf.InvisibleCharacters.Contains(x.Char))) == null
-                                && !proceedOnFound(actualR)
+                                && !proceedOnFound(actualR.Location)
                                 )
                                     return true;
                             }
@@ -220,7 +198,7 @@ namespace Cliver.PdfDocumentParser
                                 {
                                     RectangleF actualR = new RectangleF(i, j, rectangle.Width, rectangle.Height);
                                     if (ActiveTemplateOcrCharBoxs.FirstOrDefault(x => actualR.Contains(x.R)) == null
-                                        && !proceedOnFound(actualR)
+                                        && !proceedOnFound(actualR.Location)
                                         )
                                         return true;
                                 }
@@ -277,7 +255,7 @@ namespace Cliver.PdfDocumentParser
                             {
                                 RectangleF actualR = new RectangleF(tcbs[0].R.X, tcbs[0].R.Y, rectangle.Width, rectangle.Height);
                                 if (contaningOcrCharBoxs.FirstOrDefault(x => actualR.Contains(x.R)) == null
-                                && !proceedOnFound(actualR)
+                                && !proceedOnFound(actualR.Location)
                                 )
                                     return true;
                             }
@@ -303,7 +281,7 @@ namespace Cliver.PdfDocumentParser
                         if (p_ == null)
                             return false;
                         Point p = (Point)p_;
-                        return !proceedOnFound(new RectangleF(p.X, p.Y, idv.Image.Width, idv.Image.Height));
+                        return !proceedOnFound(new PointF(p.X, p.Y));
                     }
                 default:
                     throw new Exception("Unknown option: " + a.Type);
