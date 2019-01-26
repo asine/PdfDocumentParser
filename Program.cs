@@ -36,6 +36,11 @@ TBD:
     - get char boxes and do anything;
     - substitute auto-insert spaces with "|" and then split to columns (unreliabe);
     - create fields as columns
+	
+	add task considering:
+	-pdf simple;
+	-ocr simple;
+	-table;
      */
 namespace Cliver.PdfDocumentParser
 {

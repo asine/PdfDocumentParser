@@ -46,7 +46,7 @@ namespace Cliver
                     WinApi.Wts.WTSFreeMemory(buffer);
                     buffer = IntPtr.Zero;
                     if (WinApi.Wts.WTSQuerySessionInformation(IntPtr.Zero, sessionId, WinApi.Wts.WTS_INFO_CLASS.WTSDomainName, out buffer, out strLen))
-                        return Marshal.PtrToStringAnsi(buffer) + "\\" + username;
+                        return Marshal.PtrToStringAnsi(buffer) + System.IO.Path.DirectorySeparatorChar + username;
                 }
             }
             finally
