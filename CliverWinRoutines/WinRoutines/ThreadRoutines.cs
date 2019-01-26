@@ -16,7 +16,7 @@ using System.Windows.Forms;
 using System.Collections;
 using System.Web;
 
-namespace Cliver
+namespace Cliver.Win
 {
     /// <summary>
     /// Sleep not freezing the app
@@ -53,8 +53,9 @@ namespace Cliver
                         try
                         {
                             if (on_error == null)
-                                throw e;
-                            on_error.Invoke(e);
+                                Message.Error(e);
+                            else
+                                on_error.Invoke(e);
                         }
                         catch (ThreadAbortException)
                         {
