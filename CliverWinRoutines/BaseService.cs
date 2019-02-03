@@ -8,20 +8,7 @@
 //********************************************************************************************
 
 using System;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.IO;
 using System.Threading;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Script.Serialization;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Cliver;
-using System.Configuration;
-using System.Windows.Forms;
-using Microsoft.Win32;
 
 namespace Cliver
 {

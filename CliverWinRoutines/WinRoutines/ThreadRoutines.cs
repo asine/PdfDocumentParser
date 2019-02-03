@@ -7,14 +7,8 @@
 //Copyright: (C) 2007, Sergey Stoyan
 //********************************************************************************************
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using System.Collections;
-using System.Web;
 
 namespace Cliver.Win
 {
@@ -53,9 +47,8 @@ namespace Cliver.Win
                         try
                         {
                             if (on_error == null)
-                                Message.Error(e);
-                            else
-                                on_error.Invoke(e);
+                                throw e;
+                            on_error.Invoke(e);
                         }
                         catch (ThreadAbortException)
                         {

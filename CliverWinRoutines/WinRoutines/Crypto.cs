@@ -113,10 +113,7 @@ namespace Cliver.Win
             List<string> ss = SystemInfo.GetMotherboardIds();
             if (ss.Count > 0)
                 return ss[0];
-            ss = SystemInfo.GetMACs();
-            if (ss.Count > 0)
-                return ss[0];
-            return null;
+            return SystemInfo.GetWindowsVersion();
         }
 
         public class ProtectedData

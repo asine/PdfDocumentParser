@@ -7,12 +7,7 @@
 //Copyright: (C) 2013, Sergey Stoyan
 //********************************************************************************************
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using System.Reflection;
@@ -29,7 +24,7 @@ namespace Cliver
 
         public static Size GetRecommendedWindowSize(double factor = 0.8)
         {
-            Size s = SystemInfo.GetPrimaryScreenSize(false);
+            Size s = Win.SystemInfo.GetPrimaryScreenSize(false);
             return new Size((int)((float)s.Width * factor), (int)((float)s.Height * factor));
         }
     }

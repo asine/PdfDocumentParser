@@ -58,13 +58,15 @@ namespace Cliver.PdfDocumentParser
                 Environment.Exit(0);
             };
 
-            Message.TopMost = true;
+            //Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir, true);//must be called from the entry projects
+            //Log.ShowDeleteOldLogsDialog = false;//must be called from the entry projects
+
+            //Message.TopMost = true;//must be called from the entry projects
 
             //Config.Reload();//must be called from the entry projects
 
             LogMessage.DisableStumblingDialogs = false;
-            Log.ShowDeleteOldLogsDialog = false;
-            Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir, true);
+            LogMessage.ShowDialog = ((string title, Icon icon, string message, string[] buttons, int default_button, Form owner) => { return Message.ShowDialog(title, icon, message, buttons, default_button, owner); });
         }
 
         public static void Initialize()

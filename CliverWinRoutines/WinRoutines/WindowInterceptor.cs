@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 //using Cliver.Win32;
-using System.Windows.Forms;
 using System.Collections;
-using Cliver;
 
 namespace Cliver
-{    
+{
     /// <summary>
     /// Intercept dialog box creation
     /// </summary>
