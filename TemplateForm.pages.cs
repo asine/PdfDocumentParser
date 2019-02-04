@@ -202,7 +202,7 @@ namespace Cliver.PdfDocumentParser
                             s = string.Join("\r\n", pages[currentPageI].GetTextLinesAsTableColumn(field, r));
                         }
                         else
-                            s = Pdf.GetTextSurroundedByRectangle(pages[currentPageI].PdfCharBoxs, r, pages.ActiveTemplate.TextAutoInsertSpaceThreshold, pages.ActiveTemplate.TextAutoInsertSpaceSubstitute);
+                            s = Pdf.GetTextSurroundedByRectangle(pages[currentPageI].PdfCharBoxs, r, pages.ActiveTemplate.TextAutoInsertSpace);
                         drawBoxes(Settings.Appearance.SelectionBoxColor, Settings.Appearance.SelectionBoxBorderWidth, new List<RectangleF> { r });
                         return Page.NormalizeText(s);
                     case Template.Field.Types.OcrText:

@@ -17,9 +17,11 @@ namespace Cliver.PdfDocumentParser
 {
     public partial class AnchorOcrTextControl : AnchorControl
     {
-        public AnchorOcrTextControl()
+        public AnchorOcrTextControl(TextAutoInsertSpace textAutoInsertSpace)
         {
             InitializeComponent();
+
+            this.textAutoInsertSpace = textAutoInsertSpace;
 
             cSearchRectangleMargin.CheckedChanged += delegate
             {
@@ -29,6 +31,7 @@ namespace Cliver.PdfDocumentParser
                 SearchRectangleMargin.Value = cSearchRectangleMargin.Checked ? ((_object == null || _object.ParentAnchorId != null) ? (decimal)Settings.Constants.CoordinateDeviationMargin : 100) : -1;
             };
         }
+        TextAutoInsertSpace textAutoInsertSpace;
 
         override protected object getObject()
         {
@@ -49,7 +52,7 @@ namespace Cliver.PdfDocumentParser
             if (_object == null)
                 _object = new Template.Anchor.OcrText();
             StringBuilder sb = new StringBuilder();
-            foreach (var l in Ocr.GetLines(_object.CharBoxs.Select(x => new Ocr.CharBox { Char = x.Char, R = x.Rectangle.GetSystemRectangleF() })))
+            foreach (var l in Ocr.GetLines(_object.CharBoxs.Select(x => new Ocr.CharBox { Char = x.Char, R = x.Rectangle.GetSystemRectangleF() }), textAutoInsertSpace))
             {
                 foreach (var cb in l.CharBoxs)
                     sb.Append(cb.Char);

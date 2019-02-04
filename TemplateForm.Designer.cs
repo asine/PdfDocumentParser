@@ -87,7 +87,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textAutoInsertSpaceSubstitute = new System.Windows.Forms.TextBox();
+            this.textAutoInsertSpaceRepresentative = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.autoDeskewThreshold = new System.Windows.Forms.NumericUpDown();
@@ -831,7 +831,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.textAutoInsertSpaceSubstitute);
+            this.groupBox2.Controls.Add(this.textAutoInsertSpaceRepresentative);
             this.groupBox2.Controls.Add(this.label15);
             this.groupBox2.Controls.Add(this.textAutoInsertSpaceThreshold);
             this.groupBox2.Controls.Add(this.label12);
@@ -844,14 +844,14 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Text Auto-Insert Space";
             // 
-            // textAutoInsertSpaceSubstitute
+            // textAutoInsertSpaceRepresentative
             // 
-            this.textAutoInsertSpaceSubstitute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textAutoInsertSpaceSubstitute.Location = new System.Drawing.Point(542, 48);
-            this.textAutoInsertSpaceSubstitute.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.textAutoInsertSpaceSubstitute.Name = "textAutoInsertSpaceSubstitute";
-            this.textAutoInsertSpaceSubstitute.Size = new System.Drawing.Size(166, 38);
-            this.textAutoInsertSpaceSubstitute.TabIndex = 67;
+            this.textAutoInsertSpaceRepresentative.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textAutoInsertSpaceRepresentative.Location = new System.Drawing.Point(542, 48);
+            this.textAutoInsertSpaceRepresentative.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.textAutoInsertSpaceRepresentative.Name = "textAutoInsertSpaceRepresentative";
+            this.textAutoInsertSpaceRepresentative.Size = new System.Drawing.Size(166, 38);
+            this.textAutoInsertSpaceRepresentative.TabIndex = 67;
             // 
             // label15
             // 
@@ -1189,7 +1189,7 @@
         private System.Windows.Forms.LinkLabel moveDownField;
         private System.Windows.Forms.LinkLabel copy2ClipboardField;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox textAutoInsertSpaceSubstitute;
+        private System.Windows.Forms.TextBox textAutoInsertSpaceRepresentative;
         private System.Windows.Forms.Label label15;
     }
 }

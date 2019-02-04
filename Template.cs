@@ -29,15 +29,9 @@ namespace Cliver.PdfDocumentParser
 
         public string Name;
 
-        public float TextAutoInsertSpaceThreshold = 6;
-        public string TextAutoInsertSpaceSubstitute = "\t";
-        //public TextAutoInsertSpace TextAutoInsertSpace;
-        //public struct TextAutoInsertSpace
-        //{
-        //    public float Threshold = 6;
-        //    public string Substitute = "\t";
-        //    public string SubstituteReplacement = " ";
-        //}
+        //public float TextAutoInsertSpaceThreshold = 6;
+        //public string TextAutoInsertSpaceSubstitute = "\t";
+        public TextAutoInsertSpace TextAutoInsertSpace;
 
         public PageRotations PageRotation = PageRotations.NONE;
         public enum PageRotations
@@ -111,5 +105,12 @@ namespace Cliver.PdfDocumentParser
                 return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Value);
             }
         }
+    }
+
+    public class TextAutoInsertSpace
+    {
+        public float Threshold = 6;
+        public string Representative = "\t";
+        //public string Substitute = " ";
     }
 }

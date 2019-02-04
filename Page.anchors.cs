@@ -141,8 +141,10 @@ namespace Cliver.PdfDocumentParser
                             cbs = cbs.Where(x => !Pdf.InvisibleCharacters.Contains(x.Char)).ToList();
                         if (cbs.Count < 1)
                         {
-                            for (int i = 0; i < Bitmap.Width; i++)
-                                for (int j = 0; j < Bitmap.Height; j++)
+                            int w = (int)(Bitmap.Width * Settings.Constants.Image2PdfResolutionRatio - rectangle.Width);
+                            int h = (int)(Bitmap.Height * Settings.Constants.Image2PdfResolutionRatio - rectangle.Height);
+                            for (int i = 0; i < w; i++)
+                                for (int j = 0; j < h; j++)
                                 {
                                     RectangleF actualR = new RectangleF(i, j, rectangle.Width, rectangle.Height);
                                     if (PdfCharBoxs.FirstOrDefault(x => actualR.Contains(x.R) && (!pt.IgnoreInvisibleChars || !Pdf.InvisibleCharacters.Contains(x.Char))) == null
@@ -196,8 +198,10 @@ namespace Cliver.PdfDocumentParser
                         List<Template.Anchor.OcrText.CharBox> cbs = ot.CharBoxs;
                         if (cbs.Count < 1)
                         {
-                            for (int i = 0; i < Bitmap.Width; i++)
-                                for (int j = 0; j < Bitmap.Height; j++)
+                            int w = (int)(Bitmap.Width * Settings.Constants.Image2PdfResolutionRatio - rectangle.Width);
+                            int h = (int)(Bitmap.Height * Settings.Constants.Image2PdfResolutionRatio - rectangle.Height);
+                            for (int i = 0; i < w; i++)
+                                for (int j = 0; j < h; j++)
                                 {
                                     RectangleF actualR = new RectangleF(i, j, rectangle.Width, rectangle.Height);
                                     if (ActiveTemplateOcrCharBoxs.FirstOrDefault(x => actualR.Contains(x.R)) == null
@@ -258,7 +262,7 @@ namespace Cliver.PdfDocumentParser
                             {
                                 SizeF shift = new SizeF(tcbs[0].R.X - cbs[0].Rectangle.X, tcbs[0].R.Y - cbs[0].Rectangle.Y);
                                 RectangleF actualR = new RectangleF(rectangle.X + shift.Width, rectangle.Y + shift.Height, rectangle.Width, rectangle.Height);
-                                if (contaningOcrCharBoxs.FirstOrDefault(x => actualR.Contains(x.R)) == null
+                                if (contaningOcrCharBoxs.FirstOrDefault(x => actualR.Contains(x.R) && !tcbs.Contains(x)) == null
                                 && !proceedOnFound(actualR.Location)
                                 )
                                     return true;
@@ -266,7 +270,7 @@ namespace Cliver.PdfDocumentParser
                         }
                     }
                     return false;
-                case Template.Anchor.Types.ImageData://TBD:? implement recursive search of images in an anchor (- searching an image combination pixel by pixel will be very long!)
+                case Template.Anchor.Types.ImageData:
                     {
                         Template.Anchor.ImageData idv = (Template.Anchor.ImageData)a;
                         Point searchRectanglePosition;

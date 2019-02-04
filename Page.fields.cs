@@ -104,13 +104,13 @@ namespace Cliver.PdfDocumentParser
                         case ValueTypes.Default:
                             List<string> ls;
                             if (pt.ColumnOfTable == null)
-                                ls = Pdf.GetTextLinesSurroundedByRectangle(PdfCharBoxs, r, pageCollection.ActiveTemplate.TextAutoInsertSpaceThreshold, pageCollection.ActiveTemplate.TextAutoInsertSpaceSubstitute);
+                                ls = Pdf.GetTextLinesSurroundedByRectangle(PdfCharBoxs, r, pageCollection.ActiveTemplate.TextAutoInsertSpace);
                             else
                                 ls = GetTextLinesAsTableColumn(pt, r);
                             return string.Join("\r\n", ls);
                         case ValueTypes.TextLines:
                             if (pt.ColumnOfTable == null)
-                                ls = Pdf.GetTextLinesSurroundedByRectangle(PdfCharBoxs, r, pageCollection.ActiveTemplate.TextAutoInsertSpaceThreshold, pageCollection.ActiveTemplate.TextAutoInsertSpaceSubstitute);
+                                ls = Pdf.GetTextLinesSurroundedByRectangle(PdfCharBoxs, r, pageCollection.ActiveTemplate.TextAutoInsertSpace);
                             else
                                 ls = GetTextLinesAsTableColumn(pt, r);
                             return ls;
@@ -168,7 +168,7 @@ namespace Cliver.PdfDocumentParser
                 return null;
 
             List<string> ls = new List<string>();
-            foreach (Pdf.Line l in Pdf.GetLines(cbs, pageCollection.ActiveTemplate.TextAutoInsertSpaceThreshold, pageCollection.ActiveTemplate.TextAutoInsertSpaceSubstitute))
+            foreach (Pdf.Line l in Pdf.GetLines(cbs, pageCollection.ActiveTemplate.TextAutoInsertSpace))
             {
                 StringBuilder sb = new StringBuilder();
                 foreach (Pdf.CharBox cb in l.CharBoxs)

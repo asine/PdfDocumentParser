@@ -11,7 +11,6 @@ using System.Windows.Forms;
 
 /*
 TBD: 
-- !!!OCRTEXT anchor needs test and fix!!!;
 - !!!all the templates must be tested and fixed after changing anchor functioning!!!
 - check if tesseract's DetectBestOrientation can perform deskew;
 - MainForm and TemplateForm to WPF;
@@ -60,12 +59,9 @@ namespace Cliver.PdfDocumentParser
 
             //Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir, true);//must be called from the entry projects
             //Log.ShowDeleteOldLogsDialog = false;//must be called from the entry projects
-
             //Message.TopMost = true;//must be called from the entry projects
-
             //Config.Reload();//must be called from the entry projects
-
-            LogMessage.DisableStumblingDialogs = false;
+            //LogMessage.DisableStumblingDialogs = false;//must be called from the entry projects
             LogMessage.ShowDialog = ((string title, Icon icon, string message, string[] buttons, int default_button, Form owner) => { return Message.ShowDialog(title, icon, message, buttons, default_button, owner); });
         }
 

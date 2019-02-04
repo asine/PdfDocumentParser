@@ -21,7 +21,7 @@ namespace Cliver.PdfDocumentParser
         public abstract class Anchor
         {
             public int Id;
-            public PointF Position ;
+            public PointF Position;
             public int SearchRectangleMargin = -1;//px
             public float PositionDeviation = 1f;
             public bool PositionDeviationIsAbsolute = false;
@@ -62,11 +62,11 @@ namespace Cliver.PdfDocumentParser
                     public RectangleF Rectangle;
                 }
                 public SizeF Size;
-              public  bool IgnoreInvisibleChars = true;
+                public bool IgnoreInvisibleChars = true;
 
                 override public bool IsSet()
                 {
-                    return CharBoxs.Count > 0 && Size!=null;
+                    return /*CharBoxs.Count > 0 &&*/ Size != null;
                 }
 
                 override public System.Drawing.RectangleF Rectangle()
@@ -88,7 +88,7 @@ namespace Cliver.PdfDocumentParser
 
                 override public bool IsSet()
                 {
-                    return CharBoxs.Count > 0 && Size != null;
+                    return /*CharBoxs.Count > 0 &&*/ Size != null;
                 }
 
                 override public System.Drawing.RectangleF Rectangle()

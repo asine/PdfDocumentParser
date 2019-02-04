@@ -153,12 +153,7 @@ namespace Cliver.PdfDocumentParser
                                             {
                                                 Template.Anchor.PdfText pt = (Template.Anchor.PdfText)a;
                                                 pt.CharBoxs = new List<Template.Anchor.PdfText.CharBox>();
-                                                List<Pdf.Line> lines = Pdf.RemoveDuplicatesAndGetLines(Pdf.GetCharBoxsSurroundedByRectangle(pages[currentPageI].PdfCharBoxs, r.GetSystemRectangleF(), true), -1, null);
-                                                if (lines.Count < 1)
-                                                {
-                                                    pt.Size = null;
-                                                    break;
-                                                }
+                                                List<Pdf.Line> lines = Pdf.RemoveDuplicatesAndGetLines(Pdf.GetCharBoxsSurroundedByRectangle(pages[currentPageI].PdfCharBoxs, r.GetSystemRectangleF(), true), null);
                                                 foreach (Pdf.Line l in lines)
                                                     foreach (Pdf.CharBox cb in l.CharBoxs)
                                                         pt.CharBoxs.Add(new Template.Anchor.PdfText.CharBox
@@ -173,7 +168,7 @@ namespace Cliver.PdfDocumentParser
                                             {
                                                 Template.Anchor.OcrText ot = (Template.Anchor.OcrText)a;
                                                 ot.CharBoxs = new List<Template.Anchor.OcrText.CharBox>();
-                                               var selectedOcrCharBoxs = new List<Ocr.CharBox>();
+                                                var selectedOcrCharBoxs = new List<Ocr.CharBox>();
                                                 if (ot.OcrEntirePage)
                                                     selectedOcrCharBoxs.AddRange(Ocr.GetCharBoxsSurroundedByRectangle(pages[currentPageI].ActiveTemplateOcrCharBoxs, r.GetSystemRectangleF()));
                                                 else
@@ -185,7 +180,7 @@ namespace Cliver.PdfDocumentParser
                                                         selectedOcrCharBoxs.Add(cb);
                                                     }
                                                 }
-                                                foreach (Ocr.Line l in Ocr.GetLines(selectedOcrCharBoxs))
+                                                foreach (Ocr.Line l in Ocr.GetLines(selectedOcrCharBoxs, null))
                                                     foreach (Ocr.CharBox cb in l.CharBoxs)
                                                         ot.CharBoxs.Add(new Template.Anchor.OcrText.CharBox
                                                         {

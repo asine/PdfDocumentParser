@@ -265,13 +265,13 @@ namespace Cliver.PdfDocumentParser
                     case Template.Anchor.Types.PdfText:
                         {
                             if (currentAnchorControl == null || !(currentAnchorControl is AnchorPdfTextControl))
-                                currentAnchorControl = new AnchorPdfTextControl((float)textAutoInsertSpaceThreshold.Value, textAutoInsertSpaceSubstitute.Text);
+                                currentAnchorControl = new AnchorPdfTextControl(new TextAutoInsertSpace { Threshold = (float)textAutoInsertSpaceThreshold.Value, Representative = textAutoInsertSpaceRepresentative.Text });
                         }
                         break;
                     case Template.Anchor.Types.OcrText:
                         {
                             if (currentAnchorControl == null || !(currentAnchorControl is AnchorOcrTextControl))
-                                currentAnchorControl = new AnchorOcrTextControl();
+                                currentAnchorControl = new AnchorOcrTextControl(new TextAutoInsertSpace { Threshold = (float)textAutoInsertSpaceThreshold.Value, Representative = textAutoInsertSpaceRepresentative.Text });
                         }
                         break;
                     case Template.Anchor.Types.ImageData:
