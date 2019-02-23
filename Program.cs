@@ -11,16 +11,18 @@ using System.Windows.Forms;
 
 /*
 TBD: 
+- check what is config dir for the last released app and set it here;
 - download Matt's invoices and fix: Oremus Materials
 Sales and Service
 SMS_
 
 - !!!all the templates must be tested and fixed after changing anchor functioning!!!
+
+
 - check if tesseract's DetectBestOrientation can perform deskew;
 - MainForm and TemplateForm to WPF;
-- ? !!!in page.cs::_findAnchor() in case Template.Types.ImageData: images are not searched recursively (if a secondary image search failed then search stops). It should be done like it is done for linked anchors;
-- ?switch to Tesseract.4
 - tune image recognition by checking brightness deltas
+- ?switch to Tesseract.4
 - ?provide multiple field extraction on page;
 - ?change anchor id->name (involves condition expressions)
 - ?store each template in separate file;
@@ -35,12 +37,12 @@ SMS_
      - space substitution;
      - !!!anhcor functioning changed!!!
 
-    manual: tables can be processed the following ways:
+    MANUAL: tables can be processed the following ways:
     - get char boxes and do anything;
     - substitute auto-insert spaces with "|" and then split to columns (unreliabe);
     - create fields as columns
 	
-	add task considering:
+	add task considerations:
 	-pdf simple;
 	-ocr simple;
 	-table;
