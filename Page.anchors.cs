@@ -128,7 +128,7 @@ namespace Cliver.PdfDocumentParser
                 if (a.SearchRectangleMargin >= 0)
                     searchRectangle = getSearchRectangle(rectangle, a.SearchRectangleMargin);
                 else
-                    searchRectangle = new RectangleF();
+                    searchRectangle = new RectangleF();//not used, just stub to compile
             }
 
             switch (a.Type)
@@ -282,14 +282,14 @@ namespace Cliver.PdfDocumentParser
                         }
                         else
                         {
-                            id0 = new ImageData(GetRectangleFromActiveTemplateBitmap(searchRectangle.X / Settings.Constants.Image2PdfResolutionRatio, searchRectangle.Y / Settings.Constants.Image2PdfResolutionRatio, searchRectangle.Width / Settings.Constants.Image2PdfResolutionRatio, searchRectangle.Height / Settings.Constants.Image2PdfResolutionRatio));
                             searchRectanglePosition = new Point(searchRectangle.X < 0 ? 0 : (int)searchRectangle.X, searchRectangle.Y < 0 ? 0 : (int)searchRectangle.Y);
+                            id0 = new ImageData(GetRectangleFromActiveTemplateBitmap(searchRectangle.X / Settings.Constants.Image2PdfResolutionRatio, searchRectangle.Y / Settings.Constants.Image2PdfResolutionRatio, searchRectangle.Width / Settings.Constants.Image2PdfResolutionRatio, searchRectangle.Height / Settings.Constants.Image2PdfResolutionRatio));
                         }
                         Point? p_ = idv.Image.FindWithinImage(id0, idv.BrightnessTolerance, idv.DifferentPixelNumberTolerance, idv.FindBestImageMatch);
                         if (p_ == null)
                             return false;
                         Point p = (Point)p_;
-                        return !proceedOnFound(new PointF(p.X, p.Y));
+                        return !proceedOnFound(new PointF(searchRectanglePosition.X + p.X, searchRectanglePosition.Y + p.Y));
                     }
                 default:
                     throw new Exception("Unknown option: " + a.Type);

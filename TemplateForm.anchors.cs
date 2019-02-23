@@ -277,7 +277,7 @@ namespace Cliver.PdfDocumentParser
                     case Template.Anchor.Types.ImageData:
                         {
                             if (currentAnchorControl == null || !(currentAnchorControl is AnchorImageDataControl))
-                                currentAnchorControl = new AnchorImageDataControl();
+                                currentAnchorControl = new AnchorImageDataControl((float)pictureScale.Value);
                         }
                         break;
                     //case Template.Anchor.Types.Script:

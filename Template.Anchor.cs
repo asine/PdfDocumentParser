@@ -23,8 +23,6 @@ namespace Cliver.PdfDocumentParser
             public int Id;
             public PointF Position;
             public int SearchRectangleMargin = -1;//px
-            public float PositionDeviation = 1f;
-            public bool PositionDeviationIsAbsolute = false;
             virtual public int? ParentAnchorId { get; set; } = null;
 
             public Anchor()
@@ -63,6 +61,8 @@ namespace Cliver.PdfDocumentParser
                 }
                 public SizeF Size;
                 public bool IgnoreInvisibleChars = true;
+                public float PositionDeviation = 1f;
+                public bool PositionDeviationIsAbsolute = false;
 
                 override public bool IsSet()
                 {
@@ -85,6 +85,8 @@ namespace Cliver.PdfDocumentParser
                     public RectangleF Rectangle;
                 }
                 public SizeF Size;
+                public float PositionDeviation = 1f;
+                public bool PositionDeviationIsAbsolute = false;
 
                 override public bool IsSet()
                 {
