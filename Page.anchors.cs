@@ -198,8 +198,8 @@ namespace Cliver.PdfDocumentParser
                         List<Template.Anchor.OcrText.CharBox> cbs = ot.CharBoxs;
                         if (cbs.Count < 1)
                         {
-                            int w = (int)(Bitmap.Width * Settings.Constants.Image2PdfResolutionRatio - rectangle.Width);
-                            int h = (int)(Bitmap.Height * Settings.Constants.Image2PdfResolutionRatio - rectangle.Height);
+                            int w = (int)(ActiveTemplateBitmap.Width * Settings.Constants.Image2PdfResolutionRatio - rectangle.Width);
+                            int h = (int)(ActiveTemplateBitmap.Height * Settings.Constants.Image2PdfResolutionRatio - rectangle.Height);
                             for (int i = 0; i < w; i++)
                                 for (int j = 0; j < h; j++)
                                 {

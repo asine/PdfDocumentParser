@@ -54,7 +54,7 @@ namespace Cliver
 
         static Serializable get(Type serializable_type, string file, InitMode init_mode)
         {
-            if (!file.Contains(":"))
+            if (!Path.IsPathRooted(file))
                 file = Log.AppCommonDataDir + System.IO.Path.DirectorySeparatorChar + file;
             Serializable s;
             if (init_mode == InitMode.CREATE || (init_mode == InitMode.LOAD_OR_CREATE && !File.Exists(file)))
@@ -83,7 +83,7 @@ namespace Cliver
                 if (file != null)
                     __File = file;
                 Saving();
-                Cliver.Serialization.Json.Save(__File, this, true, __Indented);
+                Cliver.Serialization.Json.Save(__File, this, __Indented, true);
                 Saved();
             }
         }
