@@ -101,12 +101,12 @@ namespace Cliver.PdfDocumentParser
 
             public class ImageData : Anchor
             {
-                public List<ImageBox> ImageBoxs;//to be deleted: conversion
-                public class ImageBox//to be deleted: conversion
-                {
-                    public PdfDocumentParser.ImageData ImageData;
-                    public RectangleF Rectangle;
-                }
+                //public List<ImageBox> ImageBoxs;//to be deleted: conversion
+                //public class ImageBox//to be deleted: conversion
+                //{
+                //    public PdfDocumentParser.ImageData ImageData;
+                //    public RectangleF Rectangle;
+                //}
 
                 public PdfDocumentParser.ImageData Image;
 
