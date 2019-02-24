@@ -167,7 +167,7 @@ To get the idea of what can be done with PdfDocumentParser and how it is used, r
 <p>Number of anchors in a compound anchor can be any. Though, it should be taken to account that processing time of recursive search performed for a compound anchor exponentially increases with the chain length.
 
 
-<h3>Create anchor</h3>
+<h3>Creating anchor</h3>
 <p>How to create anchors, see in <a href='#tutorialAnchor'>tutorial</a>.
 
 
@@ -201,7 +201,7 @@ Condition expressions are composed of the following symbols: &lt;anchor id&gt;, 
 For more details refer to <a href='#tutorialCondition'>tutorial</a>.
 
 
-<h3>Set condition</h3>
+<h3>Setting condition</h3>
 <p><p>How to set conditions, see in <a href='#tutorialCondition'>tutorial</a>.
 
 
@@ -237,10 +237,11 @@ Its value is a <code>System.Drawing.Bitmap</code> object that contains a fragmen
 
 
 <h3>Multiply defined field</h3> 
-It is possible to set multiple definitions to a field. They look and are stored as separate fields but have the same name. When a field has multiple definitions, they are tried by PdfDocumentParser consecutively from first to last until some is found on the page. Thus, precedence of field's definitions is important.
+A field can get multiple definitions. They look as separate fields but are recognized as the same field because of the same name. When a field has multiple definitions, they are tried on PDF page by PdfDocumentParser consecutively from first to last until some is captured. So, precedence of field's definitions is important.
 
-<h3>Set field</h3> 
-<span class='attention'>IMPORTANT! </span> A field must be set on the same page: including setting its rectangle and assigning anchors. Anchors used by a field can be created on any page before, but should be assigned to it on the same page where its rectangle was specified. Otherwise, field's shift or size may be calculated incorrectly for some page during parsing. Thus, when tuning a field, its better to re-set it completely if you do not remember on which page it was set.
+<h3>Setting field</h3> 
+<span class='attention'>IMPORTANT! </span> A field must be completely configured on the same page that includes setting its rectangle and assigning anchors. Anchors which are used by a field, can be created on any page before, but should be assigned to the field on the same page where its rectangle was specified. Otherwise, field's shift or size may be calculated incorrectly for some page during parsing. Thus, when tuning a field, its better to re-set it completely if you do not remember on which page it was set. 
+<p>Also, if an anchor was re-set then the fields anchored to it should be re-set as well.
 <p>How to set fields, see in <a href='#tutorialField'>the tutorial</a>.
 
 
