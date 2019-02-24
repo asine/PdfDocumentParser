@@ -246,6 +246,12 @@ It is possible to set multiple definitions to a field. They look and are stored 
 
 
 
+
+
+
+
+
+
 <h2><a name='templateSettings'>Settings</a></h2>
 A template has the following settings that influence on parsing:
 <table>
@@ -259,6 +265,19 @@ A template has the following settings that influence on parsing:
 <br>Also, it is used when displaying PdfText anchor's patterns but has no influence on parsing here. 
 <br>When needed, it should be tuned experimentally.</td></tr>
 </table>
+
+<p><br><p>When extracting text, PdfDocumentParser automatically detects spaces between words. This option influences on PdfText and OcrText fields only:
+<table>
+<tr><th class='title_column'>Parameter</th><th>Description</th></tr>
+<tr><td class='title_column'><a name='Representative'>Representative</a></td>
+<td>Character which is inserted into output as an auto-detected space.</td></tr>
+<tr><td class='title_column'><a name='Threshold'>Threshold</a></td>
+<td>Space detection can be tuned by this parameter. </td></tr>
+</table>
+
+
+
+
 
 
 
