@@ -142,7 +142,7 @@ namespace Cliver.PdfDocumentParser
                             }
                         case ValueTypes.TextLines:
                         case ValueTypes.CharBoxs:
-                            throw new Exception("Option " + valueType + " does not go with this Field type");
+                            throw new Exception("Option " + valueType + " cannot be used this Field type.");
                         default:
                             throw new Exception("Unknown option: " + valueType);
                     }

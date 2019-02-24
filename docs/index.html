@@ -214,6 +214,7 @@ For more details refer to <a href='#tutorialCondition'>tutorial</a>.
 <p>Every side of a field's rectangular can be optionally linked to an anchor.
 When a field has no anchor, it retains the initial position which was its position during creation.
 When some side of a field is linked to an anchor, it is bonded to the anchor's actual position so that if on some page the anchor shifts, the side shifts together with it. This means, that the field can change its location and/or size according to its anchors. When all 4 sides of a field are linked to the same anchor then the field is simply shifts.
+<p>When some of anchors of a field is not found then the field is set not found itself.
 <p>When it is definitely known about a field that it appears on every page and always keeps the same position and size then there is no need to anchor it.
 <p>In scanned documents whose margins vary, fields cannot retain constant positions and so always should be processed with anchors.
 <p>It is advisable always to anchor fields thus minimizing probability of mistaken parsing.
@@ -236,7 +237,7 @@ Its value is a <code>System.Drawing.Bitmap</code> object that contains a fragmen
 
 
 <h3>Multiply defined field</h3> 
-It is possible to set multiple definitions to a field. They look and are stored as separate fields but have the same name. When a field has multiple definitions, they are tried by PdfDocumentParser consecutively from first to last until some is found on the page.
+It is possible to set multiple definitions to a field. They look and are stored as separate fields but have the same name. When a field has multiple definitions, they are tried by PdfDocumentParser consecutively from first to last until some is found on the page. Thus, precedence of field's definitions is important.
 
 <h3>Set field</h3> 
 <span class='attention'>IMPORTANT! </span> A field must be set on the same page: including setting its rectangle and assigning anchors. Anchors used by a field can be created on any page before, but should be assigned to it on the same page where its rectangle was specified. Otherwise, field's shift or size may be calculated incorrectly for some page during parsing. Thus, when tuning a field, its better to re-set it completely if you do not remember on which page it was set.
@@ -279,7 +280,7 @@ A template has the following settings that influence on parsing:
 <tr><td class='title_column'><a name='IsCondition'><code>Cliver.PdfDocumentParser.Page::IsCondition(string conditionName)</code></a></td>
 <td>Check if a condition is met on the page.</td></tr>
 <tr><td class='title_column'><a name='GetValue'><code>Cliver.PdfDocumentParser.Page::GetValue(string fieldName, ValueTypes valueType)</code></a></td>
-<td>Extract a field from the page. Returned object depends on valueType supplied. If anchor of the field was not found, NULL is returned.</td></tr>
+<td>Extract a field on the page. Returned object depends on valueType supplied. If some anchor of the field, if any, was not found, NULL is returned.</td></tr>
 </table>
 <p>Refer to <a href='#sampleParser'>SampleParser</a> as an live example of using PdfDocumentParser in an application.
 
@@ -549,31 +550,28 @@ PdfDocumentParser has parameters that are the same within the application's scop
 <h2>Extracting text from native PDF file</h2>
 If PDF is file is native then just using PdfText anchors and fields is enough. It is the simplest and most pleasant case.
 
-<h2>Extracting text from PDF file</h2>
-If PDF file is a scanned image then OcrText or ImageData anchors and OcrText fields have to be used. 
+<h2>Extracting text from scanned PDF file</h2>
+If PDF file is a scanned image then OcrText or ImageData anchors and OcrText fields have to be used. Also, most likely a pre-processing preparation of document pages is required which includes auto-deskew and rotation.
 
 <h2>Extracting text from tables</h2>
 Tables can have unpredictable size and column width. Because of that they need a special treatment. 
-<p>Depending on case, tables can be processed by the following ways:
+<p>Depending on the case, tables can be processed by the following ways:
 
-<br>
-<p><b>Create fields as columns</b>
-<p>It is the most gracious way. 
-<p>The template must have a field that captures the whole table. To properly overlap the table, the field's sides must be linked to anchors that recognize edges of the table.
-<p>Then, must be created fields for table's every column. These fields must have <code>ColumnOfTable</code> property set to the name of the table field. These fields are to be linked to anchors to properly recognize column's edges. These fields can stretch out beyond the table field as the work area is only an area of overlapping of column fields and the table field. 
-<p>Now, when in custom code, you call GetValue() for a column field, PdfDocumentParser engine will return an array of strings that corresponds to rows of the table. That means that the length of the output array is always the same for all the column fields. If in a column some rows are empty then they will be present in the output array as empty strings.
+<p><b>Create fields as columns:</b>
+<br>It is the most gracious way. 
+<br>The template must have a field that captures the whole table. To properly overlap the table, the field's sides must be linked to anchors that recognize edges of the table.
+<br>Then, must be created fields for table's every column. These fields must have <code>ColumnOfTable</code> property set to the name of the table field. These fields are to be linked to anchors to properly recognize column's edges. These fields can stretch out beyond the table field as the work area is only an area of overlapping of column fields and the table field. 
+<br>Now, when in custom code, you call GetValue() for a column field, PdfDocumentParser engine will return an array of strings that corresponds to rows of the table. That means that the length of the output array is always the same for all the column fields. Thus, if in some column some rows are empty then they will be present in the output array by empty strings.
 
-<br>
-<p><b>Extract the whole table as a field.</b>
-<p>Sometimes tables can not be clearly separated onto columns because they include sub-headers that break the structure or because their fields have unpredictable length etc. In such a case, if the table data still is logically structured, the whole table should be extracted as a single field and then parsed by regexes or other syntax parsing engine;
+<p><b>Extract the whole table as text:</b>
+<br>Sometimes tables can not be clearly separated onto columns because they include sub-headers that break the structure or because their fields have unpredictable length etc. In such a case, if the table data still is logically structured, the whole table should be extracted as a single field and then parsed by regexes or some other parsing tool.
 
-<br>
-<p><b>Substitute auto-insert spaces with "|" and then split to columns (unreliabe).</b>
-<p>as a simplification of the pre
+<p><b>Use auto-inserted spaces to split the table text onto columns:</b>
+<br>It is a variation of the previous way. If empty spans between columns are long enough so that PdfDocumentParser will automatically insert spaces between column values, then those spaces can be configured to be substituted with some uncommon character e.g. "|". Then, the whole table text can be be split onto lines by new line symbol and every line split onto column values by "|". 
+<br>Generally this way must be considered as unreliable but in some cases it may work well.
 
-<br>
-<p><b>Get char boxes and do anything.</b>
-<p>It is the most potentially powerful approach but unfortunately too abstract. Having all the information about the table content, it is up to you, how to process it.
+<p><b>Get the table field as char boxes and do anything with them:</b>
+<br>It is the most powerful approach potentially but unfortunately too abstract. On the one hand, you get all the information about the table content: characters, their positions and sizes, on the other hand, it is completely up to you how to process this stuff.
 
 
 
