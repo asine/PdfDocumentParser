@@ -5,11 +5,6 @@
 //********************************************************************************************
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Data.Linq;
-using System.Linq;
-using System.Drawing;
-using System.Collections.Specialized;
 
 namespace Cliver.PdfDocumentParser
 {

@@ -4,8 +4,6 @@
 //        http://www.cliversoft.com
 //********************************************************************************************
 using System;
-using System.Diagnostics;
-using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 
