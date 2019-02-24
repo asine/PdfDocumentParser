@@ -254,28 +254,28 @@ A field can get multiple definitions. They look as separate fields but are recog
 
 
 <h2><a name='templateSettings'>Settings</a></h2>
-A template has the following settings that influence on parsing:
+There are settings that are common for template scope and influence on parsing.
+
+<h3>Space auto-detection</h3>
+<p>When extracting text, PdfDocumentParser automatically detects spaces between words. This option influences on PdfText and OcrText fields only. Also, it is used when displaying PdfText anchor's patterns but has no influence on parsing:
+<table>
+<tr><th class='title_column'>Parameter</th><th>Description</th></tr>
+<tr><td class='title_column'><a name='Representative'>Representative</a></td>
+<td>Character which is inserted into output as an auto-detected space.</td></tr>
+<tr><td class='title_column'><a name='Threshold'>Threshold</a></td>
+<td>Space detection can be tuned by this parameter. When needed, it should be tuned experimentally. </td></tr>
+</table>
+
+
+<h3>Scanned PDF pages pre-processing</h3>
+<p>The following options are used for pre-processing scanned PDF pages:
 <table>
 <tr><th class='title_column'>Parameter</th><th>Description</th></tr>
 <tr><td class='title_column'><a name='AutoDeskew'>Auto-Deskew</a></td>
 <td>It is used for scanned documents. It is always advisable to keep it active in templates targeted to scanned documents. </td></tr>
 <tr><td class='title_column'><a name='PageRotation'>Rotate Pages</a></td>
 <td>It is used mostly for scanned documents. A page must be correctly oriented to get OCR working properly on it.</td></tr>
-<tr><td class='title_column'><a name='TextAutoInsertSpaceThreshold'>Space Auto-Insert Threshold</a></td>
-<td>It is used while splitting text, captured for PdfText field, onto words.
-<br>Also, it is used when displaying PdfText anchor's patterns but has no influence on parsing here. 
-<br>When needed, it should be tuned experimentally.</td></tr>
 </table>
-
-<p><br><p>When extracting text, PdfDocumentParser automatically detects spaces between words. This option influences on PdfText and OcrText fields only:
-<table>
-<tr><th class='title_column'>Parameter</th><th>Description</th></tr>
-<tr><td class='title_column'><a name='Representative'>Representative</a></td>
-<td>Character which is inserted into output as an auto-detected space.</td></tr>
-<tr><td class='title_column'><a name='Threshold'>Threshold</a></td>
-<td>Space detection can be tuned by this parameter. </td></tr>
-</table>
-
 
 
 
