@@ -11,11 +11,11 @@ namespace Cliver.SampleParser
 {
     /*
  TBD:
- - !!!in page.cs::_findAnchor() in case Template.Types.ImageData: images are not searched recursively (if a secondary image search failed then search stops). It should be done like it is done for linked anchors;
- - switch to Tesseract.4
- - MainForm and TemplateForm to WPF;
- - tune image recognition by checking brightness deltas
- - ?change anchor id->name (involves condition expressions)
+- download Matt's invoices and fix: Oremus Materials
+Sales and Service
+SMS_
+
+- !!!all the templates must be tested and fixed after changing anchor functioning!!!
 - ? store each template in separate file;
 
      */

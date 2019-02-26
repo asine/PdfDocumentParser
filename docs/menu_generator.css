@@ -28,7 +28,7 @@ span.h5 {margin:5 0 0 80;}
 span.h6 {margin:5 0 0 100;}
 
 .noTopMargin{
-    margin-top: 0;
+    margin-top: 0 !important;
 }
 
 .contentContainer{
@@ -89,5 +89,27 @@ span.h6 {margin:5 0 0 100;}
 .switchLink{
     font-size: 0.8em; 
     color: #00d;   
+}
+
+.pathCaption{
+    color: #555;
+    background-color1: #ddd;
+    font-weight: bold;
+	font-size:0.9em;
+}
+
+.pathCaption > a:link {
+  color: #555;
+  text-decoration: none;
+}
+
+.pathCaption > a:visited {
+  color: #555;
+  text-decoration: none;
+}
+
+.pathCaption > a:hover {
+  color: #555;
+  text-decoration: underline;
 }
 

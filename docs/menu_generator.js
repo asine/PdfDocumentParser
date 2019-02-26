@@ -46,10 +46,28 @@ var convert = function(mode){
                             ids.pop();
                     }
                     ids[ids.length - 1] += 1;
+                    var id = ids.join('_');
+					
                     var content = document.createElement('div');
                     e.parentNode.insertBefore(content, e.nextSibling);
-                    var id = ids.join('_');
-                    items[id] = {'header': e, 'content': content, 'id': id};
+					
+                    var path = document.createElement('div');
+                    e.parentNode.insertBefore(path, e);
+					path.classList.add('pathCaption');
+					var p = '';
+					var pid = id;
+					while(1){
+						var pm = pid.match(/(.*)_.*?$/);
+						if(!pm)
+							break;
+						pid = pm[1];
+						p = '<a href="#' + pid + '">' + items[pid]['header'].innerText + '</a> &gt; ' + p;
+					}
+					path.innerHTML = '&gt; ' + p;
+					path.style['margin-top'] = getComputedStyle(e).marginTop;
+					e.classList.add('noTopMargin');
+					
+                    items[id] = {'header': e, 'content': content, 'id': id, 'path': path};
                     orderedItemIds.push(id);
                     e = content.nextSibling;
                     continue;
@@ -287,9 +305,10 @@ var convert = function(mode){
     var navigate2currentAnchor = function(){
         var setItemVisibleInContent = function(item, visible){
             if(mode == '_collapsedContent')
-                item['header'].classList.add('noTopMargin');
+                item['path'].classList.add('noTopMargin');
             else
-                item['header'].classList.remove('noTopMargin');
+                item['path'].classList.remove('noTopMargin');
+            item['path'].style.display = visible ? 'block': 'none';
             item['header'].style.display = visible ? 'block': 'none';
             item['content'].style.display = visible ? 'block': 'none';            
         };

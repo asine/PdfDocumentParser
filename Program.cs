@@ -11,14 +11,6 @@ using System.Reflection;
 
 /*
 TBD: 
-- check what is config dir for the last released app and set it here;
-- download Matt's invoices and fix: Oremus Materials
-Sales and Service
-SMS_
-
-- !!!all the templates must be tested and fixed after changing anchor functioning!!!
-
-
 - check if tesseract's DetectBestOrientation can perform deskew;
 - MainForm and TemplateForm to WPF;
 - tune image recognition by checking brightness deltas
