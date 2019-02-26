@@ -244,7 +244,7 @@ namespace Cliver.SampleParser
                         Template2 t = (Template2)r.Tag;
                         if (t == null)
                             return;
-                        Template2 t2 = SerializationRoutines.Json.Deserialize<Template2>(SerializationRoutines.Json.Serialize(t));
+                        Template2 t2 = Serialization.Json.Deserialize<Template2>(Serialization.Json.Serialize(t));
                         t2.Template.Name = "";
                         t2.Template.Editor.TestFile = null;
                         int i = template2s.Rows.Add(new DataGridViewRow());
@@ -300,7 +300,7 @@ namespace Cliver.SampleParser
 
             TemplateManager tm = new TemplateManager(
                 r,
-                SerializationRoutines.Json.Clone(t.Template),
+                Serialization.Json.Clone(t.Template),
                 Settings.TemplateLocalInfo.GetInfo(t.Template.Name).LastTestFile,
                 Settings.General.InputFolder
                 );

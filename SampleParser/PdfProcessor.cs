@@ -105,7 +105,7 @@ namespace Cliver.SampleParser
         {
             if (field.Rectangle == null)
                 return;
-            object v = p.GetValue(field);
+            object v = p.GetValue(field.Name);
             if (v is ImageData)
             {
                 if (!fieldNames2text.ContainsKey(field.Name))
