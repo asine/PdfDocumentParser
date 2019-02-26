@@ -6,6 +6,8 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Reflection;
 
 /*
 TBD: 
@@ -61,6 +63,14 @@ namespace Cliver.PdfDocumentParser
                 Environment.Exit(0);
             };
 
+            //Assembly assembly = Assembly.GetExecutingAssembly();
+            //FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            //Version = new Version(fvi.ProductVersion);
+            Version = Assembly.GetExecutingAssembly().GetName().Version;
+
+            object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+            Name = ((AssemblyProductAttribute)attributes[0]).Product;
+
             //Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir, true);//must be called from the entry projects
             //Log.ShowDeleteOldLogsDialog = false;//must be called from the entry projects
             //Message.TopMost = true;//must be called from the entry projects
@@ -73,5 +83,8 @@ namespace Cliver.PdfDocumentParser
         {//trigger Program()
 
         }
+
+        public static readonly Version Version;
+        public static readonly string Name;
     }
 }

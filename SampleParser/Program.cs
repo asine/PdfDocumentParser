@@ -4,9 +4,7 @@
 //        http://www.cliversoft.com
 //********************************************************************************************
 using System;
-using System.Diagnostics;
-using System.IO;
-using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Cliver.SampleParser
@@ -35,6 +33,9 @@ namespace Cliver.SampleParser
                 Environment.Exit(0);
             };
 
+            Version = AssemblyRoutines.GetAssemblyCompiledTime(Assembly.GetEntryAssembly()).ToString("yyMMdd-HHmmss"); //String.Format("Version {0}", AssemblyVersion);
+            Name = Application.ProductName;
+
             Message.TopMost = true;
 
             Config.Reload();
@@ -42,6 +43,8 @@ namespace Cliver.SampleParser
             Log.ShowDeleteOldLogsDialog = false;
             Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir, true);
         }
+        public static readonly string Version;
+        public static readonly string Name;
 
         [STAThread]
         static void Main()

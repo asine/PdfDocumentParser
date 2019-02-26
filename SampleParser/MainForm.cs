@@ -38,7 +38,7 @@ namespace Cliver.SampleParser
             InitializeComponent();
 
             this.Icon = AssemblyRoutines.GetAppIcon();
-            Text = Application.ProductName;
+            Text = Program.Name + " [" + Program.Version + "] / " + PdfDocumentParser.Program.Name + " [" + PdfDocumentParser.Program.Version.ToString(2) + "]";
 
             Message.Owner = this;
 
