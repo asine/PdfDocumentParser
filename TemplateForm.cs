@@ -313,7 +313,7 @@ namespace Cliver.PdfDocumentParser
 
                     if (!File.Exists(testFile.Text))
                     {
-                        LogMessage.Error("File '" + testFile.Text + "' does not exist!");
+                        Log.Message.Error("File '" + testFile.Text + "' does not exist!");
                         return;
                     }
 
@@ -324,7 +324,7 @@ namespace Cliver.PdfDocumentParser
                 }
                 catch (Exception ex)
                 {
-                    LogMessage.Error(ex);
+                    Log.Message.Error(ex);
                 }
             };
 

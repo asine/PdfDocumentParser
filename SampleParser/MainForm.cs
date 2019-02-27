@@ -183,7 +183,7 @@ namespace Cliver.SampleParser
                 }
                 catch (Exception ex)
                 {
-                    LogMessage.Error(ex);
+                    Log.Message.Error(ex);
                 }
             };
 
@@ -392,7 +392,7 @@ namespace Cliver.SampleParser
             }
             catch (Exception e)
             {
-                LogMessage.Error(e);
+                Log.Message.Error(e);
                 return false;
             }
         }
@@ -422,7 +422,7 @@ namespace Cliver.SampleParser
             }
             catch (Exception ex)
             {
-                LogMessage.Error(ex);
+                Log.Message.Error(ex);
             }
         }
 
@@ -443,7 +443,7 @@ namespace Cliver.SampleParser
         {
             if (processorThread != null && processorThread.IsAlive)
             {
-                if (!LogMessage.AskYesNo("Processing is running. Would you like to abort it and restart?", true))
+                if (!Log.Message.AskYesNo("Processing is running. Would you like to abort it and restart?", true))
                     return;
                 while (processorThread.IsAlive)
                 {
@@ -491,7 +491,7 @@ namespace Cliver.SampleParser
                     }
                     catch (Exception ex)
                     {
-                        LogMessage.Error(ex);
+                        Log.Message.Error(ex);
                     }
                     finally
                     {
@@ -513,7 +513,7 @@ namespace Cliver.SampleParser
         {
             if (processorThread != null && processorThread.IsAlive)
             {
-                if (!LogMessage.AskYesNo("Processing is running. Would you like to abort it?", true))
+                if (!Log.Message.AskYesNo("Processing is running. Would you like to abort it?", true))
                     return;
             }
             Close();
