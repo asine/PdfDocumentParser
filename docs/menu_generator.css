@@ -92,24 +92,25 @@ span.h6 {margin:5 0 0 100;}
 }
 
 .pathCaption{
-    color: #555;
+    color: #888;
     background-color1: #ddd;
-    font-weight: bold;
+    font-weight1: bold;
 	font-size:0.9em;
 }
 
 .pathCaption > a:link {
-  color: #555;
+  color: #888;
   text-decoration: none;
 }
 
 .pathCaption > a:visited {
-  color: #555;
+  color: #888;
   text-decoration: none;
 }
 
 .pathCaption > a:hover {
-  color: #555;
-  text-decoration: underline;
+  color: #000;
+  text-decoration1: underline;
+  text-decoration: none;
 }
 

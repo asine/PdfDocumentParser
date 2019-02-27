@@ -1042,6 +1042,7 @@
             this.LeftAnchorId.Name = "LeftAnchorId";
             this.LeftAnchorId.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.LeftAnchorId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.LeftAnchorId.ToolTipText = "Left Anchor";
             this.LeftAnchorId.Width = 104;
             // 
             // TopAnchorId
@@ -1049,6 +1050,7 @@
             this.TopAnchorId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.TopAnchorId.HeaderText = "TA";
             this.TopAnchorId.Name = "TopAnchorId";
+            this.TopAnchorId.ToolTipText = "Top Anchor";
             this.TopAnchorId.Width = 57;
             // 
             // RightAnchorId
@@ -1056,6 +1058,7 @@
             this.RightAnchorId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.RightAnchorId.HeaderText = "RA";
             this.RightAnchorId.Name = "RightAnchorId";
+            this.RightAnchorId.ToolTipText = "Right Anchor";
             this.RightAnchorId.Width = 60;
             // 
             // BottomAnchorId
@@ -1063,6 +1066,7 @@
             this.BottomAnchorId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.BottomAnchorId.HeaderText = "BA";
             this.BottomAnchorId.Name = "BottomAnchorId";
+            this.BottomAnchorId.ToolTipText = "Bottom Anchor";
             this.BottomAnchorId.Width = 59;
             // 
             // Rectangle
