@@ -63,7 +63,7 @@ var convert = function(mode){
 						pid = pm[1];
 						p = '<a href="#' + pid + '">' + items[pid]['header'].innerText + '</a> &gt; ' + p;
 					}
-					pathCaption.innerHTML = '&gt; ' + p;
+					pathCaption.innerHTML = p;
 					pathCaption.style['margin-top'] = getComputedStyle(e).marginTop;
 					e.classList.add('noTopMargin');
 					
