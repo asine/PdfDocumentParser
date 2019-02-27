@@ -295,20 +295,25 @@ There are settings that are common within template scope and influence on parsin
 
 <h1><a name='parsingApi'>Parsing API</a></h1>
 
-<h2>Methods</h2>
 <table>
 <tr><th class='title_column'>Method | Property</th><th>Description</th></tr>
 <tr><td class='title_column'><code>Cliver.PdfDocumentParser.PageCollection::ActiveTemplate</code></td>
 <td>Set active template in PdfDocumentParser.</td></tr>
+<tr><td class='title_column'><code>Cliver.PdfDocumentParser.PageCollection::[int pageNumber]</code></td>
+<td>Get Cliver.PdfDocumentParser.Page object.</td></tr>
 <tr><td class='title_column'><a name='IsCondition'><code>Cliver.PdfDocumentParser.Page::IsCondition(string conditionName)</code></a></td>
 <td>Check if a condition is met on the page.</td></tr>
 <tr><td class='title_column'><a name='GetValue'><code>Cliver.PdfDocumentParser.Page::GetValue(string fieldName, ValueTypes valueType)</code></a></td>
 <td>Extract a field on the page. Returned object depends on valueType supplied. If some anchor of the field, if any, was not found, NULL is returned.</td></tr>
 </table>
+<p>There may be more auxiliary properties and methods which are not mentioned here. Their use can be understood from the code. 
 <p>Refer to <a href='#sampleParser'>SampleParser</a> as an live example of using PdfDocumentParser in an application.
 
 
-<h2><a name='pseudoCode'>Pseudo-code</a></h2>
+
+
+
+<h2><a name='pseudoCode'>Pseudo-code samples</a></h2>
 The main idea of using PdfDocumentParser in an application is that custom operations are performed depending on custom <a href='#condition'>conditions</a>. 
 <p>Since the collection of <a href='#condition'>conditions</a> is predetermined by the application, it is impossible to outline 'the most general algorithm' of processing a PDF file with PdfDocumentParser. Still, some basic algorithms are considered below. 
 
@@ -318,31 +323,33 @@ An algorithm of parsing a PDF file where pages has no logical relation between e
 <code class="language-csharp">//pseudo-code: processing a PDF file where every page is a new document.
 //Note: the classes and methods are not real and serve for simplicity and clarity only.
 
-foreach(page in pdfFile)
+pageCollection = new PageCollection(inputPdf);
+
+foreach(page in pageCollection)
 {
     //find the right template for the page
-    if(PdfDocumentParser.ActiveTemplate == null)
+    if(pageCollection.ActiveTemplate == null)
     {
         foreach(template in templates)
         {
-            PdfDocumentParser.ActiveTemplate = template;
-            if(PdfDocumentParser.IsCondition(page, "TemplateCorrespondsToThisPage"))
+            pageCollection.ActiveTemplate = template;
+            if(page.IsCondition("TemplateCorrespondsToPage"))
                 break;
-            PdfDocumentParser.ActiveTemplate = null;
+            pageCollection.ActiveTemplate = null;
         }
     }
     
-    if(PdfDocumentParser.ActiveTemplate == null)
+    if(pageCollection.ActiveTemplate == null)
     {
         logWarning("No template matched to page: " + page.Number);
         continue;
     }
         
     //applying the chosen template to the page 
-    object value1 = PdfDocumentParser.GetValue(page, "field1");
+    object value1 = page.GetValue("field1");
     //doing something with value1...
     <...>    
-    object value2 = PdfDocumentParser.GetValue(page, "field2");
+    object value2 = page.GetValue("field2");
     //doing something with value2...
     <...>
 }</code>
@@ -357,41 +364,49 @@ Here is a more advanced algorithm designed for parsing a PDF file that contains 
 <code class="language-csharp">//pseudo-code: processing a PDF file that contains multi-page documents.
 //Note: the classes and methods are not real and serve for simplicity and clarity only.
 
-foreach(page in pdfFile)
+pageCollection = new PageCollection(inputPdf);
+
+foreach(page in pageCollection)
 {
     //find a template appropriate for the document
-    if(PdfDocumentParser.ActiveTemplate == null)
+    if(pageCollection.ActiveTemplate == null)
     {
         foreach(template in templates)
         {
-            PdfDocumentParser.ActiveTemplate = template;
-            if(PdfDocumentParser.IsCondition(page, "DocumentFirstPage"))
+            pageCollection.ActiveTemplate = template;
+            if(page.IsCondition("DocumentFirstPage"))
                 break;
-            PdfDocumentParser.ActiveTemplate = null;
+            pageCollection.ActiveTemplate = null;
         }
     }
     
-    if(PdfDocumentParser.ActiveTemplate != null)
+    if(pageCollection.ActiveTemplate != null)
     {        
         //applying the chosen template    
-        if(PdfDocumentParser.IsCondition(page, "Field1MustBeParsed"))
+        if(page.IsCondition("Field1MustBeParsed"))
         {
-            object value1 = PdfDocumentParser.GetValue(page, "field1");
+            object value1 = page.GetValue("field1");
             //doing something with value1...
             <...>
         }
-        if(PdfDocumentParser.IsCondition(page, "Field2MustBeParsed"))
+        if(p.IsCondition(page, "Field2MustBeParsed"))
         {
-            object value2 = PdfDocumentParser.GetValue(page, "field2");
+            object value2 = page.GetValue("field2");
             //doing something with value2...
             <...>
         }
     
-        if(PdfDocumentParser.IsCondition(page, "DocumentLastPage"))
-            PdfDocumentParser.ActiveTemplate = null;
+        if(page.IsCondition("DocumentLastPage"))
+            pageCollection.ActiveTemplate = null;
     }
 }</code>
 </pre>
+
+
+
+
+
+
 
 
 
@@ -403,7 +418,7 @@ Template Editor is a GUI object that is called from the application whenever con
 
 <p>How to configure a template, see in <a href='#tutorialTemplateEditor'>tutorial</a>.
 
-<h2><a name='templateEditorApi'>Template Editor API</a></h2>
+<h2><a name='templateEditorApi'>API</a></h2>
 <table>
 <tr><th class='title_column'>Object</th><th>Description</th></tr>
 <tr><td class='title_column'><code>Cliver.PdfDocumentParser.TemplateForm</code></td>
@@ -578,7 +593,14 @@ We already have created anchors #1 and #2 that are needed to specify FirstPageOf
 
 
 
-<h1><a name='guidance'></a>Task guidance</h1>
+
+
+
+
+
+
+
+<h1><a name='guidance'></a>Guidance</h1>
 
 <h2>Extracting text from native PDF file</h2>
 If PDF is file is native then just using PdfText anchors and fields is enough. It is the simplest and most pleasant case.
@@ -632,7 +654,7 @@ Some more details on SampleParser can be found in tutorials: <a href='#tutorialP
 
 
 <h2>Source code</h2>
-Download PdfDocumentParser (pre-)release <a href='#repository'>source code</a>. Find SampleParser.sln there and open it in Visual Studio. It will give a complete example of using PdfDocumentParser which you can modify according to your requirements.
+Download PdfDocumentParser (pre-)release <a href='#repository'>source code</a>. Find SampleParser.sln there and open it in Visual Studio. It will give a complete example of using PdfDocumentParser which you can modify according to your needs.
 
 
 <h2>Enhanced template parameters</h2>
@@ -647,7 +669,7 @@ Download PdfDocumentParser (pre-)release <a href='#repository'>source code</a>. 
 </table>
 
 <h2>Considerations</h2>
-<p>Processing time depends on the custom algorithm. However, it is possible to make some general tips. Processing time can be reduced by the following ways:
+<p>Processing time depends on the custom algorithm and templates. However, it is possible to drastically reduce the processing time by the following ways:
 <ul> 
 <li> specify file filters for templates. If it can be done then the other tips are not needed;
 <li> specify template orders so that templates that require a longer time for recognition have a higher order. E.g. templates that use auto-deskew should be checked in the last place;

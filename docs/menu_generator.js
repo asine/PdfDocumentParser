@@ -168,11 +168,11 @@ var convert = function(mode){
             var id = orderedItemIds[i];
             var e = document.createElement('span');
             e.classList.add('menuItem');
-            if(/\S/.test(items[id]['content'].innerText)){
+            //if(/\S/.test(items[id]['content'].innerText)){
                 e.addEventListener('click', onClickMenuItem);
-            }
-            else
-                e.classList.add('empty');
+            //}
+            //else
+            //    e.classList.add('empty');
             var level = (id.match(/_/ig) || []).length + 1;
             e.classList.add('h' + level);
             e.setAttribute('_id', id);
