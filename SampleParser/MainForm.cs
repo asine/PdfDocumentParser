@@ -304,16 +304,16 @@ namespace Cliver.SampleParser
                 Settings.TemplateLocalInfo.GetInfo(t.Template.Name).LastTestFile,
                 Settings.General.InputFolder
                 );
-            Template2 it = Settings.Template2s.CreateInitialTemplate();
-            foreach (Template.Field f in tm.Template.Fields)
-            {
-                int i = it.Template.Fields.FindIndex(x => x.Name == f.Name);
-                if (i >= 0)
-                    it.Template.Fields[i] = f;
-                else
-                    it.Template.Fields.Add(f);
-            }
-            tm.Template.Fields = it.Template.Fields;
+            //Template2 it = Settings.Template2s.CreateInitialTemplate();
+            //foreach (Template.Field f in tm.Template.Fields)
+            //{
+            //    int i = it.Template.Fields.FindIndex(x => x.Name == f.Name);
+            //    if (i >= 0)
+            //        it.Template.Fields[i] = f;
+            //    else
+            //        it.Template.Fields.Add(f);
+            //}
+            //tm.Template.Fields = it.Template.Fields;
 
             tf = new TemplateForm(tm);
             tf.FormClosed += delegate
