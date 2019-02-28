@@ -49,7 +49,7 @@ For more details see <a href='#anchorTypes'>anchor types</a> and <a href='#field
     </ul> 
 </li>
 </ul> 
-For more details see <a href='#pseudoCode'>pseudo-code</a>, <a href='#tutorialParsingApi'>tutorial: using Parsing API</a> and <a href='#sampleParser'>SampleParser</a>.
+For more details see <a href='#pseudoCode'>pseudo-code</a>, <a href='#tutorial'>tutorial</a> and <a href='#sampleParser'>SampleParser</a>.
 
 <h3><a name='creatingSolution'>Visual Studio</a></h3>
 In Visual Studio:
@@ -75,7 +75,7 @@ Open <a href='https://github.com/sergeystoyan/PdfDocumentParser' target='_blank'
 
 
 <h2><a name='gettingStarted'>Getting started</a></h2>
-To get the idea of what can be done with PdfDocumentParser and how it is used, review <a href='#tutorialParsingApi'>tutorial: using Parsing API</a> and then <a href='#tutorialTemplateEditor'>tutorial: setting template</a>.  
+To get the idea of what can be done with PdfDocumentParser and how it is used, review <a href='#tutorial'>tutorial</a>.  
 
 
 <h1><a name="template">Template</a></h1>
@@ -161,7 +161,7 @@ To get the idea of what can be done with PdfDocumentParser and how it is used, r
 <p>A linked anchor is named 'child' of the linking one which is named 'parent'. When an anchor is linked to another anchor, its search area (when it is set to not entire page) becomes related to its parent anchor's position. That means that a parent anchor is searched not until its first match found as done for a stand-alone anchor, but until a match found that satisfies to the child anchor as well. 
 <br>More specifically, when a child anchor has <a href='#anchorPdfText'>Search Rectangle Margin</a> set to not entire page, position of its parent anchor, while searching as parent, may differ from position of the very same anchor, while searching stand-alone. 
 <br>The same consideration is true for child anchors too: an anchor, whose search area is set to not entire page, may change its position after linking to another anchor. 
-<br>Thus, <span class='attention'>NOTE: </span>An anchor acting stand-alone and the same anchor acting as a part of a compound anchor should be considered different anchors because they can have different positions. 
+<br>Thus, <span class='attention'>NOTE: </span>An anchor acting stand-alone and the same anchor acting as a part of a compound anchor should be considered different anchors because they may have different positions on a page. 
 <p>Number of anchors in a compound anchor can be any. Though, it should be taken to account that processing time of recursive search performed for a compound anchor exponentially grows with the chain length.
 
 
@@ -422,7 +422,7 @@ foreach(page in pageCollection)
 <h1><a name="templateEditor">Template Editor</a></h1>
 Template Editor is a GUI object that is called from the application whenever configuring <a href="#template">template</a> is required. 
 
-<p>How to configure a template, see in <a href='#tutorialTemplateEditor'>tutorial</a>.
+<p>How to configure a template, see in <a href='#tutorial'>tutorial</a>.
 
 <h2><a name='templateEditorApi'>API</a></h2>
 <table>
@@ -457,12 +457,10 @@ PdfDocumentParser has parameters that are the same within the application's scop
 
 
 <h1><a name='tutorial'>Tutorial</a></h1>
+This tutorial considers a sample task that is general enough to cover a broad range of practical tasks.
 
-<h2>Planning a custom application</h2>
-
-
-<h3>Sample task</h3>
-<p>This tutorial considers a sample task that is general enough to cover a broad range of practical tasks. The task is as follows:
+<h2>Sample task</h2>
+<p>The task to be solved is as follows:
 <p>there are PDF files that contain invoices issued by different companies. Values InvoiceId and TotalAmount must be parsed from every invoice. (Below, to keep the task more abstract, term 'document' is used instead of 'invoice'.)
 <p>It is known that the PDF files to be parsed comply with the following:
 <br>- a file can contain more than one document;
@@ -472,17 +470,16 @@ PdfDocumentParser has parameters that are the same within the application's scop
 
 <p>The application developed for this task is <a href='#sampleParser'>SampleParser</a>. It can be referred to during this tutorial.
 
-<h3><a name1=''>Fields and conditions<a/></h3>
-<p>Since the documents are issued by different companies, they have different layouts. Every layout will require its own parsing template. So, SampleParser will have to manage many templates where every template should process a whole document. One-to-one correspondence between document types and templates is a usual way to go
-<p>Next, let's clarify which <a href='#field'>fields</a> and <a href='#condition'>conditions</a> are required for the task.
-<p>As is obvious, every template should have <a href='#field'>fields</a> InvoiceId, TotalAmount.
-<p>What about <a href='#condition'>conditions</a>? SampleParser should be able <b>A)</b>to detect the first page of every document in a file and <b>B)</b>to choose the right template for the detected document. (A) and (B) can be joined into one <a href='#condition'>condition</a> that can be named 'FirstPageOfDocument'. 
+<h2>Planning application</h2>
+<p>Since the documents are issued by different companies, they have different layouts. Every layout will require its own parsing template. So, SampleParser will have to manage many templates where every template should process a whole document. One-to-one correspondence between document types and templates is the common way.
+<p>As is obvious, every template will have the following <a href='#field'>fields</a> InvoiceId and TotalAmount.
+<p>Next, let's decide which <a href='#condition'>conditions</a> are needed. SampleParser should be able <b>A)</b>to detect the first page of every document in a file and <b>B)</b>to choose the right template for the detected document. (A) and (B) can be joined into one <a href='#condition'>condition</a> named 'FirstPageOfDocument'. 
 <p>Also, one more <a href='#condition'>condition</a> is required to detect the end of a document. Let's name it 'LastPageOfDocument'.
-<p>It will work in the following manner: when a template has FirstPageOfDocument satisfied on a PDF page then it is to be chosen for processing of this page and the next ones until LastPageOfDocument is met. When it happens, the previously captured fields should be processed and emptied and next page must be examined by FirstPageOfDocument condition of every template until the right template is detected.
+<p>These conditions will work in the following manner: when a template has FirstPageOfDocument satisfied on a PDF page then it is to be chosen for processing of this page and the next ones until LastPageOfDocument is met. When it happens, the previously captured fields should be processed and emptied and next page must be examined by FirstPageOfDocument condition of every template until the right template is detected.
 
 
-<h3>Algorithm</h3>
-Now, we can outline the algorithm of processing a PDF file in SampleParser:
+<h2>Algorithm</h2>
+Having fields and conditions, we can outline the algorithm of processing a PDF file:
 <pre>
 <code class="language-csharp">//pseudo-code: parsing a document
 //Note: the classes and methods are not real and serve for simplicity and clarity only.
@@ -505,8 +502,8 @@ foreach(page in pageCollection)
     
     if(pageCollection.ActiveTemplate != null)
     {        
-        InvoiceId = page.GetValue("INVOICE");
-        TotalAmount = page.GetValue("TOTAL");
+        InvoiceId = page.GetValue("InvoiceId");
+        TotalAmount = page.GetValue("TotalAmount");
         
         if(page.IsCondition("DocumentLastPage"))
         {
@@ -525,21 +522,21 @@ Refer to <a href='#sampleParser'>SampleParser</a> as live code.
 
 
 
-<h2><a name='tutorialTemplateEditor'>Setting template</a></h2>
-Now, having the parser code elaborated, let's see how to create templates with Template Editor.
+<h2>Setting template</h2>
+Now, having the parser code elaborated, let's learn how to create templates with Template Editor.
 
 
 <h3>Open Template Editor</h3>
 <p>The way of opening Template Editor depends on the application. In <a href='#sampleParser'>SampleParser</a> a <a href="#template">template</a> can be created from scratch or copied from an existing one and then modified as needed. 
 
-<p>The tutorial shows creating a template for a pdf file by repository path PdfDocumentParser\SampleParser\test_files\102.pdf. A template created for this file is supplied in SampleParser under name 'test'. The template created below should be identical with it.
+<p>The tutorial shows creating a template for a PDF file by repository path PdfDocumentParser\SampleParser\test_files\102.pdf. A template created for this file is supplied in SampleParser under name 'test'. The template created below should be identical with it.
 <p>Let's start with a blank template: click the blank row in the table in the main window of SampleParser and then click button Edit.
 <p class='screenshot_title'>Open a test PDF file in Template Editor:
 <img src='img/tutorial0.png'/>
 
 <h3><a name='tutorialAnchor'>Create anchors</a></h3>
-<p>Templates in SampleParser have 2 conditions and 2 fields (see <a href='#customConfiguration'>configuration</a>). 
-<p>Let's first create anchors for the condition. As FirstPageOfDocument should identify documents that correspond to the template, it needs an anchor targeted to such a fragment of the document that is distinctive for its type. Obviously, such a fragment must identify the document type with a high confidence. In the case of invoices, the company's logo can serve well this goal.
+<p>As was defined, templates in SampleParser have 2 conditions and 2 fields. 
+<p>Let's first create anchors needed for the conditions. As FirstPageOfDocument should identify documents that correspond to the template, it needs an anchor targeted to such a fragment of the document that is distinctive for its type. Obviously, such a fragment must identify the document type with a high confidence. In the case of invoices, the company's logo can serve well this goal.
 <p class='screenshot_title'>Create an anchor that captures the logo and thus detects if the template corresponds to the page:
 <img src='img/tutorial1.png'/>
 
@@ -662,7 +659,7 @@ SampleParser is a customized desktop application based on <a href='#overview'>Pd
 <li>processes PDF files in a custom manner;</li>
 </ul>
 
-Some more details on SampleParser can be found in tutorials: <a href='#tutorialParsingApi'>using Parsing API</a> and <a href='#tutorialTemplateEditor'>setting template</a>. 
+Some more details on SampleParser can be found in <a href='#tutorial'>tutorial</a>. 
 
 <img src='img/sampleparser.png'/>
 
