@@ -11,12 +11,6 @@ namespace Cliver.SampleParser
 {
     /*
  TBD:
-- download Matt's invoices and fix: Oremus Materials
-Sales and Service
-SMS_
-
-- !!!all the templates must be tested and fixed after changing anchor functioning!!!
-- ? store each template in separate file;
 
      */
     class Program
