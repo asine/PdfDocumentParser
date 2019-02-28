@@ -94,7 +94,7 @@ namespace Cliver.SampleParser
                             Settings.TemplateLocalInfo.SetUsedTime(currentTemplate.Name);
 
                             document = new Document();
-                            document.Invoice = (string)Pages[pageI].GetValue(Template2.FieldNames.Invoice);
+                            document.Invoice = (string)Pages[pageI].GetValue(Template2.FieldNames.InvoiceId);
                             break;
                         }
                     }
@@ -112,7 +112,7 @@ namespace Cliver.SampleParser
 
                 if (Pages[pageI].IsCondition(Template2.ConditionNames.DocumentLastPage))
                 {
-                    document.Total = (string)Pages[pageI].GetValue(Template2.FieldNames.Total);
+                    document.Total = (string)Pages[pageI].GetValue(Template2.FieldNames.TotalAmount);
                     record(currentTemplate.Name, documentFirstPageI, pageI, document);
                     currentTemplate = null;
                     continue;

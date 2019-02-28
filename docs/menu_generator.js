@@ -51,7 +51,7 @@ var convert = function(mode){
                     var content = document.createElement('div');
                     e.parentNode.insertBefore(content, e.nextSibling);
 					
-                    var pathCaption = document.createElement('div');
+                    var pathCaption = document.createElement('span');
                     e.parentNode.insertBefore(pathCaption, e);
 					pathCaption.classList.add('pathCaption');
 					var p = '';
@@ -176,10 +176,21 @@ var convert = function(mode){
             var level = (id.match(/_/ig) || []).length + 1;
             e.classList.add('h' + level);
             e.setAttribute('_id', id);
-            e.innerHTML = items[id]['header'].innerText; 
+            e.innerHTML = items[id]['header'].innerText;// + items[id]['pathCaption'].outerHTML;
             menu.appendChild(e);
             items[id]['menuItem'] = e;
             
+            /*items[id]['menuItem'].addEventListener('mouseenter', function(e){
+				var t = this.childNodes[1]; 
+				t.left = '0px';
+				t.bottom = 0;//e.top - 10;				
+				t.classList.add('visible');
+			});            
+            items[id]['menuItem'].addEventListener('mouseleave', function(e){
+				var t = this.childNodes[1]; 			
+				t.classList.remove('visible');
+			});*/
+			
             items[id]['header'].addEventListener('click', onClickItemHeader);
         }
         

@@ -114,3 +114,23 @@ span.h6 {margin:5 0 0 100;}
   text-decoration: none;
 }
 
+.menuItem > .pathCaption {
+  visibility: hidden;
+  background-color: #f3f2ed7a;
+  color1: #f00;
+  text-align: center;
+  padding: 5px;
+
+  position: absolute;
+  z-index: -1;
+  bottom1: 125%;
+  left1: -50%;
+
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.menuItem > .pathCaption.visible {
+  visibility: visible;
+  opacity: 1;
+}

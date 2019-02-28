@@ -21,7 +21,7 @@ namespace Cliver.PdfDocumentParser
             InitializeComponent();
 
             Icon = AssemblyRoutines.GetAppIcon();
-            Text = AboutBox.AssemblyProduct + ": Template Editor";
+            Text = Program.Name + ": Template Editor";
 
             this.templateManager = templateManager;
 

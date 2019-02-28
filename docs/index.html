@@ -260,7 +260,7 @@ A field can have multiple definitions. In Template Editor they are shown as sepa
 There are settings that are common within template scope and influence on parsing.
 
 <h3>Space auto-detection</h3>
-<p>When extracting text, PdfDocumentParser automatically detects spaces between words. This influences on output of PdfText and OcrText fields. Also, it is used for displaying PdfText anchor's patterns in Template Editor.
+<p>When extracting text, PdfDocumentParser automatically detects spaces between words. This influences on the output of PdfText and OcrText fields and also, on displaying PdfText anchor's patterns in Template Editor.
 <table>
 <tr><th class='title_column'>Parameter</th><th>Description</th></tr>
 <tr><td class='title_column'><a name='Representative'>Representative</a></td>
@@ -271,7 +271,7 @@ There are settings that are common within template scope and influence on parsin
 
 
 <h3>Scanned PDF pages pre-processing</h3>
-<p>The following options are used for pre-processing of scanned PDF pages:
+<p>The following options are used for pre-processing preparation of scanned PDF pages. They influence on OcrText or ImageData anchors and fields while PdfText type remains not affected.
 <table>
 <tr><th class='title_column'>Parameter</th><th>Description</th></tr>
 <tr><td class='title_column'><a name='AutoDeskew'>Auto-Deskew</a></td>
@@ -296,18 +296,24 @@ There are settings that are common within template scope and influence on parsin
 <h1><a name='parsingApi'>Parsing API</a></h1>
 
 <table>
-<tr><th class='title_column'>Method | Property</th><th>Description</th></tr>
-<tr><td class='title_column'><code>Cliver.PdfDocumentParser.PageCollection::ActiveTemplate</code></td>
-<td>Set active template in PdfDocumentParser.</td></tr>
-<tr><td class='title_column'><code>Cliver.PdfDocumentParser.PageCollection::[int pageNumber]</code></td>
-<td>Get Cliver.PdfDocumentParser.Page object.</td></tr>
-<tr><td class='title_column'><a name='IsCondition'><code>Cliver.PdfDocumentParser.Page::IsCondition(string conditionName)</code></a></td>
+<tr><th class='title_column'>Object</th>
+<th class='title_column'>Method | Property</th>
+<th>Description</th></tr>
+<tr><td class='title_column' rowspan='2'><code>Cliver.PdfDocumentParser.PageCollection</code></td>
+<td class='title_column'><code>ActiveTemplate</code></td>
+<td>Set active template for the PDF file.</td></tr>
+<tr>
+<td class='title_column'><code>[int pageNumber]</code></td>
+<td>Get Cliver.PdfDocumentParser.Page object from the PDF file.</td></tr>
+<tr><td class='title_column' rowspan='2'><code>Cliver.PdfDocumentParser.Page</code></td>
+<td class='title_column'><a name='IsCondition'><code>IsCondition(string conditionName)</code></a></td>
 <td>Check if a condition is met on the page.</td></tr>
-<tr><td class='title_column'><a name='GetValue'><code>Cliver.PdfDocumentParser.Page::GetValue(string fieldName, ValueTypes valueType)</code></a></td>
-<td>Extract a field on the page. Returned object depends on valueType supplied. If some anchor of the field, if any, was not found, NULL is returned.</td></tr>
+<tr>
+<td class='title_column'><a name='GetValue'><code>GetValue(string fieldName, ValueTypes valueType)</code></a></td>
+<td>Extract a field from the page. The returned object depends on valueType supplied. When some anchor of the field, if any, was not found, NULL is returned.</td></tr>
 </table>
 <p>There may be more auxiliary properties and methods which are not mentioned here. Their use can be understood from the code. 
-<p>Refer to <a href='#sampleParser'>SampleParser</a> as an live example of using PdfDocumentParser in an application.
+<p>Refer to <a href='#sampleParser'>SampleParser</a> as a live example of using PdfDocumentParser in an application.
 
 
 
@@ -323,7 +329,7 @@ An algorithm of parsing a PDF file where pages has no logical relation between e
 <code class="language-csharp">//pseudo-code: processing a PDF file where every page is a new document.
 //Note: the classes and methods are not real and serve for simplicity and clarity only.
 
-pageCollection = new PageCollection(inputPdf);
+pageCollection = new PageCollection(pdfFile);
 
 foreach(page in pageCollection)
 {
@@ -364,7 +370,7 @@ Here is a more advanced algorithm designed for parsing a PDF file that contains 
 <code class="language-csharp">//pseudo-code: processing a PDF file that contains multi-page documents.
 //Note: the classes and methods are not real and serve for simplicity and clarity only.
 
-pageCollection = new PageCollection(inputPdf);
+pageCollection = new PageCollection(pdfFile);
 
 foreach(page in pageCollection)
 {
@@ -456,7 +462,7 @@ PdfDocumentParser has parameters that are the same within the application's scop
 
 
 <h3>Sample task</h3>
-<p>This tutorial considers a certain sample task that is general enough to cover a broad range of practical tasks. The task follows:
+<p>This tutorial considers a sample task that is general enough to cover a broad range of practical tasks. The task is as follows:
 <p>there are PDF files that contain invoices issued by different companies. Values InvoiceId and TotalAmount must be parsed from every invoice. (Below, to keep the task more abstract, term 'document' is used instead of 'invoice'.)
 <p>It is known that the PDF files to be parsed comply with the following:
 <br>- a file can contain more than one document;
@@ -466,47 +472,47 @@ PdfDocumentParser has parameters that are the same within the application's scop
 
 <p>The application developed for this task is <a href='#sampleParser'>SampleParser</a>. It can be referred to during this tutorial.
 
-<h3><a name='customConfiguration'>Custom configuration<a/></h3>
-<p>As is obvious from the task requirements, the <a href='#field'>field</a> collection predetermined in SampleParser should be: InvoiceId, TotalAmount.
-<p>Now let's decide which <a href='#condition'>conditions</a> are needed in SampleParser. 
-<p>Since the documents are issued by different companies, they have different layouts. Every layout will require its own parsing template. On the other hand, a whole document can be processed with a single template. Therefore, SampleParser should be able <b>A)</b>to detect the first page of every document in a file and <b>B)</b>to choose the right template for the document.
-<p>Checks (A) and (B) can be joined into one <a href='#condition'>condition</a>. Let's name it 'FirstPageOfDocument'. 
-<p>Also, another <a href='#condition'>condition</a> is required to detect the end of a document. Let's name it 'LastPageOfDocument'.
-<p>It will work in the following manner: when a template has its FirstPageOfDocument satisfied on a PDF page then it is to be chosen for processing of this page and the next ones until LastPageOfDocument is met. When it happens, the previously captured fields should be processed and emptied and next pages must be examined for FirstPageOfDocument condition until it is met for some template.
-<p>So, the condition collection in SampleParser will consist of FirstPageOfDocument and LastPageOfDocument which is sufficient for the task.
+<h3><a name1=''>Fields and conditions<a/></h3>
+<p>Since the documents are issued by different companies, they have different layouts. Every layout will require its own parsing template. So, SampleParser will have to manage many templates where every template should process a whole document. One-to-one correspondence between document types and templates is a usual way to go
+<p>Next, let's clarify which <a href='#field'>fields</a> and <a href='#condition'>conditions</a> are required for the task.
+<p>As is obvious, every template should have <a href='#field'>fields</a> InvoiceId, TotalAmount.
+<p>What about <a href='#condition'>conditions</a>? SampleParser should be able <b>A)</b>to detect the first page of every document in a file and <b>B)</b>to choose the right template for the detected document. (A) and (B) can be joined into one <a href='#condition'>condition</a> that can be named 'FirstPageOfDocument'. 
+<p>Also, one more <a href='#condition'>condition</a> is required to detect the end of a document. Let's name it 'LastPageOfDocument'.
+<p>It will work in the following manner: when a template has FirstPageOfDocument satisfied on a PDF page then it is to be chosen for processing of this page and the next ones until LastPageOfDocument is met. When it happens, the previously captured fields should be processed and emptied and next page must be examined by FirstPageOfDocument condition of every template until the right template is detected.
 
 
-<h3>Custom algorithm</h3>
-Now, summing up the said above, the algorithm of processing a PDF file in SampleParser should be the following:
+<h3>Algorithm</h3>
+Now, we can outline the algorithm of processing a PDF file in SampleParser:
 <pre>
 <code class="language-csharp">//pseudo-code: parsing a document
 //Note: the classes and methods are not real and serve for simplicity and clarity only.
 
-object InvoiceId, TotalAmount;
+string InvoiceId, TotalAmount;
+pageCollection = new PageCollection(pdfFile);
 
-foreach(page in pdfFile)
+foreach(page in pageCollection)
 { 
-    if(PdfDocumentParser.ActiveTemplate == null)
+    if(pageCollection.ActiveTemplate == null)
     {
         foreach(template in templates)
         {
-            PdfDocumentParser.ActiveTemplate = template;
-            if(PdfDocumentParser.IsCondition(page, "DocumentFirstPage"))
+            pageCollection.ActiveTemplate = template;
+            if(page.IsCondition("DocumentFirstPage"))
                 break;
-            PdfDocumentParser.ActiveTemplate = null;
+            pageCollection.ActiveTemplate = null;
         }
     }
     
-    if(PdfDocumentParser.ActiveTemplate != null)
+    if(pageCollection.ActiveTemplate != null)
     {        
-        InvoiceId = PdfDocumentParser.GetValue(page, "INVOICE");
-        TotalAmount = PdfDocumentParser.GetValue(page, "TOTAL");
+        InvoiceId = page.GetValue("INVOICE");
+        TotalAmount = page.GetValue("TOTAL");
         
-        if(PdfDocumentParser.IsCondition(page, "DocumentLastPage"))
+        if(page.IsCondition("DocumentLastPage"))
         {
             record(InvoiceId, TotalAmount);
             InvoiceId, TotalAmount = null;
-            PdfDocumentParser.ActiveTemplate = null;
+            pageCollection.ActiveTemplate = null;
         }
     }
 }</code>
@@ -520,8 +526,7 @@ Refer to <a href='#sampleParser'>SampleParser</a> as live code.
 
 
 <h2><a name='tutorialTemplateEditor'>Setting template</a></h2>
-This tutorial proceeds with the sample considered in <a href='#tutorialParsingApi'>tutorial: using Parsing API</a>. 
-<p>The custom application is <a href='#sampleParser'>SampleParser</a>.
+Now, having the parser code elaborated, let's see how to create templates with Template Editor.
 
 
 <h3>Open Template Editor</h3>
@@ -580,42 +585,15 @@ We already have created anchors #1 and #2 that are needed to specify FirstPageOf
 
 
 
-<h2><a name1=''>Parsing table</a></h2>
+<h2><a name1=''>Parsing tables</a></h2>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h1><a name='guidance'></a>Guidance</h1>
-
-<h2>Extracting text from native PDF file</h2>
-If PDF is file is native then just using PdfText anchors and fields is enough. It is the simplest and most pleasant case.
-
-<h2>Extracting text from scanned PDF file</h2>
-If PDF file is a scanned image then OcrText or ImageData anchors and OcrText fields have to be used. Also, most likely a pre-processing preparation of document pages is required which includes auto-deskew and rotation.
-
-<h2>Extracting text from tables</h2>
 Tables can have unpredictable size and column width. Because of that they need a special treatment. 
 <p>Depending on the case, tables can be processed by the following ways:
 
 <p><b>Create fields as columns:</b>
-<br>It is the most gracious way. 
+<br>It is the most simple and robust way. 
 <br>The template must have a field that captures the whole table. To properly overlap the table, the field's sides must be linked to anchors that recognize edges of the table.
-<br>Then, must be created fields for table's every column. These fields must have <code>ColumnOfTable</code> property set to the name of the table field. These fields are to be linked to anchors to properly recognize column's edges. These fields can stretch out beyond the table field as the work area is only an area of overlapping of column fields and the table field. 
+<br>Then, there must be created fields for table's every column. These fields must have <code>ColumnOfTable</code> property set to the name of the table field. These fields are to be linked to anchors to properly recognize column's edges. These fields can stretch out beyond the table field as the work area is only an area of overlapping of column fields and the table field. 
 <br>Now, when in custom code, you call GetValue() for a column field, PdfDocumentParser engine will return an array of strings that corresponds to rows of the table. That means that the length of the output array is always the same for all the column fields. Thus, if in some column some rows are empty then they will be present in the output array by empty strings.
 
 <p><b>Extract the whole table as text:</b>
@@ -627,6 +605,42 @@ Tables can have unpredictable size and column width. Because of that they need a
 
 <p><b>Get the table field as char boxes and do anything with them:</b>
 <br>It is the most powerful approach potentially but unfortunately too abstract. On the one hand, you get all the information about the table content: characters, their positions and sizes, on the other hand, it is completely up to you how to process this stuff.
+
+<h3>Enhancing sample task</h3>
+Let's consider an additional requirement to the tutorial task: extract from invoices all the listed product/services and their prices as arrays. 
+<p>For this requirement, the following fields are to be introduced to SampleParser: ProductTable that catches the entire table and ProductNames and ProductCosts that catch the respective columns. ProductNames and ProductCosts must have <code>ColumnOfTable</code> property set to "ProductTable" to be properly treated by PdfDocumentParser: their output will be their intersection with ProductTable.
+<p>When it is done, the output of <a name='GetValue'><code>GetValue(..., ValueTypes.TextLines)</code></a> called for ProductNames and ProductCosts will be string arrays of the same length corresponding to the number of rows in the table.
+
+
+<h3>Setting column fields</h3>
+
+<p>Open template 'test' created previously in Template Editor and set the table and column fields. Because the table in the PDF file may have different location and height, the fields' top and bottom must be linked to proper anchors. 
+<img src='img/tutorial9.png'/>
+
+
+
+<h3>Duplicating field definitions</h3>
+
+<p>It appears that the fields are not captured on the next page because the bottom anchor does not exists on the page. To fix it, new definitions should be created for the fields.
+<img src='img/tutorial10.png'/>
+
+<p>Now, the fields are captured successfully with additional definitions and there is no need to change anything in the parsing code. 
+<br><span class='attention'>NOTE: </span>Column definitions strongly belong to the definitions of their table accordingly to their order so the number of definitions of table and column fields must be the same.
+
+
+
+
+
+
+
+
+
+<h2>Parsing scanned PDF file</h2>
+When PDF file is a scanned image, the template designed for it, most likely, will perform a pre-processing preparation of every page which includes auto-deskew and rotation. Then OcrText or ImageData anchors and OcrText fields can be applied to the prepared page. 
+<p>If the PDF file is mixed, there is no problem to use in the same template PdfText anchors and fields where they work. 
+<p>Except the said above, parsing routine is the same for either scanned and native PDF's. 
+
+
 
 
 

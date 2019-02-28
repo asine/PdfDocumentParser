@@ -77,8 +77,8 @@ namespace Cliver.SampleParser
                         },
                         Fields = new List<Template.Field>
                         {
-                            new Template.Field.PdfText { Name = Template2.FieldNames.Invoice , Rectangle=new Template.RectangleF(0,0,10,10)},
-                            new Template.Field.PdfText { Name = Template2.FieldNames.Total, Rectangle=new Template.RectangleF(0,0,10,10)},
+                            new Template.Field.PdfText { Name = Template2.FieldNames.InvoiceId , Rectangle=new Template.RectangleF(0,0,10,10)},
+                            new Template.Field.PdfText { Name = Template2.FieldNames.TotalAmount, Rectangle=new Template.RectangleF(0,0,10,10)},
                             new Template.Field.PdfText { Name = Template2.FieldNames.ProductTable, Rectangle=new Template.RectangleF(0,0,10,10)},
                             new Template.Field.PdfText { Name = Template2.FieldNames.ProductNames, Rectangle=new Template.RectangleF(0,0,10,10), ColumnOfTable=Template2.FieldNames.ProductTable},
                             new Template.Field.PdfText { Name = Template2.FieldNames.ProductCosts, Rectangle=new Template.RectangleF(0,0,10,10), ColumnOfTable=Template2.FieldNames.ProductTable},
@@ -106,8 +106,8 @@ namespace Cliver.SampleParser
 
         public class FieldNames
         {
-            public const string Invoice = "Invoice";
-            public const string Total = "Total";
+            public const string InvoiceId = "InvoiceId";
+            public const string TotalAmount = "TotalAmount";
             public const string ProductTable = "ProductTable";
             public const string ProductNames = "ProductNames";
             public const string ProductCosts = "ProductCosts";
